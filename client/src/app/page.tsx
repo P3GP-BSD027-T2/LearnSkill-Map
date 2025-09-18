@@ -1,9 +1,7 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white px-6">
-   <div className="mb-6">
+    <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white ">
+   <div className="mb-10">
   <span className="inline-flex items-center gap-2 px-4 py-1.5 text-sm font-medium text-yellow-800 bg-yellow-100 rounded-full shadow-sm">
     <svg
       xmlns="http://www.w3.org/2000/svg"
