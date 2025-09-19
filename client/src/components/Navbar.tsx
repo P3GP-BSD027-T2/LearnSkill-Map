@@ -5,9 +5,7 @@ import { Bell } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/logo.png"; 
-import SignInForm from "./sign-in-form";
-import SignUpForm from "./sign-up-form";
-
+import Link from "next/link";
 
 export default function Navbar() {
   const [user, setUser] = useState<null | { name: string }>(null);
@@ -23,14 +21,15 @@ export default function Navbar() {
           height={38}
           className="rounded-md"
         />
-        <span className="font-semibold text-blue-800 text-base">
-          LearnSkill Map
-        </span>
+       
+   <Link href="/" className="font-semibold text-blue-800 text-base">
+  LearnSkill Map
+</Link>
       </div>
 
 
       <div className="hidden md:flex space-x-3 text-sm text-gray-700 gap-6 py-5">
-        <a href="#" className="hover:text-blue-600 transition">Browse</a>
+        <a href="/roadmap" className="hover:text-blue-600 transition">Browse</a>
         <a href="#" className="hover:text-blue-600 transition">My Learning</a>
         <a href="#" className="hover:text-blue-600 transition">Achievements</a>
         <a href="#" className="hover:text-blue-600 transition">Community</a>
