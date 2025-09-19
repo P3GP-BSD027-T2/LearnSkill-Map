@@ -15,7 +15,7 @@ export default function RegisterPage() {
 
         <Tabs
           defaultValue="signin"
-          className="bg-white w-md flex flex-col justify-center items-center p-6 rounded-lg gap-4"
+          className="bg-white w-md flex flex-col justify-center items-center p-6 rounded-lg gap-4 h-"
         >
           <TabsList className="w-full rounded-2xl">
             <TabsTrigger

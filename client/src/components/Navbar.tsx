@@ -3,14 +3,19 @@
 import { useState } from "react";
 import { Bell } from "lucide-react";
 import Image from "next/image";
-import Logo from "@/assets/logo.png"; 
+import Logo from "@/assets/logo.png";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Navbar() {
   const [user, setUser] = useState<null | { name: string }>(null);
+  const pathName = usePathname();
+  const hiddenRoutes = ["/account"];
+
+  if (hiddenRoutes.includes(pathName)) return null;
 
   return (
     <nav className="w-full bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between">
-  
       <div className="flex items-center ">
         <Image
           src={Logo}
@@ -24,12 +29,19 @@ export default function Navbar() {
         </span>
       </div>
 
-
       <div className="hidden md:flex space-x-3 text-sm text-gray-700">
-        <a href="#" className="hover:text-blue-600 transition">Browse</a>
-        <a href="#" className="hover:text-blue-600 transition">My Learning</a>
-        <a href="#" className="hover:text-blue-600 transition">Achievements</a>
-        <a href="#" className="hover:text-blue-600 transition">Community</a>
+        <a href="#" className="hover:text-blue-600 transition">
+          Browse
+        </a>
+        <a href="#" className="hover:text-blue-600 transition">
+          My Learning
+        </a>
+        <a href="#" className="hover:text-blue-600 transition">
+          Achievements
+        </a>
+        <Link href={"/user/1"} className="hover:text-blue-600 transition">
+          Profile
+        </Link>
       </div>
 
       {/* Right */}
