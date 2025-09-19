@@ -232,6 +232,49 @@ export default function Home() {
     ))}
   </div>
 </section>
+  <section className="max-w-6xl mx-auto px-6 py-12">
+        <h1 className="text-2xl font-bold text-center mb-2">Unlock Your Potential</h1>
+        <p className="text-gray-600 text-center mb-8">
+          Earn achievements as you progress through your learning journey.
+          Track your milestones and celebrate your accomplishments.
+        </p>
+
+        {/* Achievement Progress */}
+        <div className="bg-white p-4 rounded-xl shadow mb-8">
+          <div className="flex justify-between items-center mb-2">
+            <span className="font-semibold">Achievement Progress</span>
+            <span className="text-sm text-gray-500">3 of 6</span>
+          </div>
+          <div className="w-full bg-gray-200 h-2 rounded-full">
+            <div className="h-2 bg-blue-600 rounded-full w-1/2"></div>
+          </div>
+        </div>
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* First Steps */}
+          <div className="bg-white p-4 rounded-xl shadow border">
+            <p className="font-semibold">First Steps</p>
+            <p className="text-sm text-gray-500">Complete your first lesson</p>
+            <span className="text-green-600 text-xs font-bold">Earned</span>
+          </div>
+
+          {/* Speed Learner */}
+          <div className="bg-white p-4 rounded-xl shadow border">
+            <p className="font-semibold">Speed Learner</p>
+            <p className="text-sm text-gray-500">Complete 5 lessons in a single day</p>
+            <span className="text-green-600 text-xs font-bold">Earned</span>
+          </div>
+
+          <div className="bg-white p-4 rounded-xl shadow border">
+            <p className="font-semibold">Project Master</p>
+            <p className="text-sm text-gray-500">Complete 10 hands-on projects</p>
+            <div className="mt-2 w-full bg-gray-200 h-2 rounded-full">
+              <div className="h-2 bg-blue-600 rounded-full w-[70%]"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 </main>
   );
 }
