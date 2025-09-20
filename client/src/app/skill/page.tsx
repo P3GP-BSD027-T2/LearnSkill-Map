@@ -16,8 +16,6 @@ export default function RoadmapCatalog() {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/skills`
         );
-
-        // pastikan data array
         if (Array.isArray(res.data)) {
           setRoadmaps(res.data);
         } else {
@@ -50,7 +48,7 @@ export default function RoadmapCatalog() {
 
   return (
     <main className="bg-gray-50 min-h-screen py-12 px-6">
-      {/* Header */}
+
       <div className="max-w-6xl mx-auto text-center mb-10">
         <h1 className="text-3xl font-bold text-[#375EEB]">Browse Skills</h1>
         <p className="text-gray-600 mt-2">
@@ -106,11 +104,12 @@ export default function RoadmapCatalog() {
                     {roadmap?.level ?? "Beginner"}
                   </p>
                 </div>
-                <Link href={`/roadmap/${roadmap.id}`}>
-                  <button className="mt-4 px-4 py-2 bg-[#375EEB] text-white rounded-lg text-sm hover:bg-blue-700 transition">
-                    See Details
-                  </button>
-                </Link>
+            <Link href={`/skill/${roadmap.slug}`}>
+              <button className="mt-4 px-4 py-2 bg-[#375EEB] text-white rounded-lg text-sm hover:bg-blue-700 transition">
+                See Details
+              </button>
+            </Link>
+
               </div>
             ))}
           </div>

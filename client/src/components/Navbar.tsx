@@ -25,7 +25,7 @@ export default function Navbar({ userToken }: { userToken?: string }) {
       </div>
 
       <div className="hidden md:flex space-x-3 text-sm text-gray-700 gap-5 ">
-        <Link href={"/roadmap"} className="hover:text-blue-600 transition">
+        <Link href={"/skill"} className="hover:text-blue-600 transition">
           Browser
         </Link>
         <a href="#" className="hover:text-blue-600 transition">
