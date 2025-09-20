@@ -5,13 +5,35 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { toast } from "sonner";
+import { login } from "@/server-action";
+import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
   const [hidePassword, setHidePassword] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [signInInput, setSigninInput] = useState({ email: "", password: "" });
+  const router = useRouter();
 
   const signInSubmitHandler = async () => {
-    console.log(signInInput.email, signInInput.password);
+    try {
+      setLoading(true);
+
+      const res = await login(signInInput);
+
+      if (res.success) {
+        toast.success("Login success");
+        router.replace("/");
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Something went wrong.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -64,8 +86,9 @@ export default function SignInForm() {
         <Button
           className="bg-blue-600 hover:cursor-pointer hover:bg-blue-700 mt-4 w-full"
           type="submit"
+          disabled={loading}
         >
-          Sign In
+          {loading ? "Signing In..." : "Sign In"}
         </Button>
       </form>
     </>
