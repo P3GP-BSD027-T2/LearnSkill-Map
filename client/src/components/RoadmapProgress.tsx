@@ -5,7 +5,7 @@ import RoadmapCard from "./RoadmapCard";
 export default function RoadmapProgress() {
   return (
     <>
-      <div className="p-6 flex flex-col items-center gap-8 rounded-2xl shadow-sm w-full border">
+      <div className="p-6 flex flex-col items-center gap-8 rounded-2xl shadow-sm w-full border col-span-2">
         <div className="flex gap-4 items-center w-full">
           <div className="flex items-center bg-blue-100 p-2 rounded-lg">
             <Target className=" text-blue-600 w-10 h-10" />
