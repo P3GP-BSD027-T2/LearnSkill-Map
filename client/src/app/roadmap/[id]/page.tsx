@@ -32,21 +32,21 @@ export default function RoadmapDetailPage() {
           height={steps.length * 200}
           viewBox={`0 0 1200 ${steps.length * 200}`}
         >
-          {/* 🔹 Jalan utama (biru) */}
+ 
           <path
             d={`
               M 600 50
               ${steps
                 .map((_, i) => {
                   const y = 200 * (i + 1);
-                  const x = i % 2 === 0 ? 420 : 780; // posisi kanan kiri smooth
+                  const x = i % 2 === 0 ? 420 : 780; 
                   return `T ${x} ${y}`;
                 })
                 .join(" ")}
             `}
             fill="none"
             stroke="#375EEB"
-            strokeWidth="22"   // lebih kecil dari sebelumnya
+            strokeWidth="22"   
             strokeLinecap="round"
           />
 
@@ -136,7 +136,6 @@ export default function RoadmapDetailPage() {
         })}
       </div>
 
-      {/* 🔹 Modal detail node */}
       {selected && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-white text-black p-6 rounded-lg max-w-md shadow-xl animate-fadeIn">
