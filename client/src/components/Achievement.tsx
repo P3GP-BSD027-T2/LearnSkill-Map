@@ -10,7 +10,7 @@ export default function Achievement() {
             <Award className=" text-amber-600 w-10 h-10" />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <p className="font-semibold text-xl">Your Achievements</p>
+            <p className="font-semibold text-xl">Achievements</p>
           </div>
         </div>
 
