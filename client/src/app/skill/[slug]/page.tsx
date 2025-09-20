@@ -165,13 +165,14 @@ export default function SkillDetail() {
             );
           })}
       </div>
-      {/* Debug Data Viewer */}
-<div className="max-w-3xl mx-auto mt-12">
+    
+{/* <div className="max-w-3xl mx-auto mt-12">
   <h2 className="text-lg font-bold mb-2 text-gray-700"> Raw Data</h2>
   <pre className="bg-gray-900 text-green-400 text-xs p-4 rounded-lg overflow-x-auto">
     {JSON.stringify(skill, null, 2)}
   </pre>
-</div>
+</div> */}
+
 {selectedNode && (
   <Sheet
     open={!!selectedNode}

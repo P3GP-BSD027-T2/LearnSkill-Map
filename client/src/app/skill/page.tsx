@@ -33,9 +33,9 @@ export default function RoadmapCatalog() {
   }, []);
 
   const filteredRoadmaps = roadmaps.filter((roadmap) => {
-    const title = roadmap?.title ?? "";
+    const name = roadmap?.name ?? "";
     const category = roadmap?.category ?? "";
-    const matchesSearch = title
+    const matchesSearch = name
       .toLowerCase()
       .includes(search.toLowerCase());
     const matchesFilter = filter === "All" || category === filter;

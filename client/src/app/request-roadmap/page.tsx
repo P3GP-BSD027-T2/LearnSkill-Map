@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles } from "lucide-react"; // lebih cocok buat AI vibes ✨
+import { Sparkles } from "lucide-react"; 
 
 export default function Page() {
   const [project, setProject] = useState("");
