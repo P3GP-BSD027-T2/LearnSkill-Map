@@ -82,7 +82,6 @@ export default function RoadmapCatalog() {
         </div>
       </div>
 
-   
       <div className="max-w-6xl mx-auto">
         <h2 className="text-xl font-semibold mb-4 text-[#375EEB]">
           All Skills
@@ -92,13 +91,12 @@ export default function RoadmapCatalog() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredRoadmaps.map((roadmap, index) => (
-  <div
-    key={roadmap.id ?? `roadmap-${index}`}
-    className="bg-white rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col justify-between border border-gray-200"
-  >
-
-                <div>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">
+      <div
+         key={roadmap.id ?? `roadmap-${index}`}
+         className="bg-white rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col justify-between border border-gray-200"
+      >
+       <div>
+            <h3 className="text-lg font-semibold mb-2 text-gray-800">
                     {roadmap?.name ?? "Untitled"}
                   </h3>
                   <p className="text-gray-600 text-sm mb-3">
