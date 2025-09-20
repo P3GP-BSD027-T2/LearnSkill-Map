@@ -11,7 +11,9 @@ export default function ProfileCard() {
       <div className="relative">
         <Avatar className="h-20 w-20">
           <AvatarImage src="/user.png" alt="Profile picture" />
-          <AvatarFallback className="bg-blue-500 text-white">AC</AvatarFallback>
+          <AvatarFallback className="bg-blue-500 text-white font-semibold text-2xl">
+            AC
+          </AvatarFallback>
         </Avatar>
         {/* Status Icon */}
       </div>
