@@ -31,8 +31,8 @@ export default function Navbar({ userToken }: { userToken?: string }) {
         <Link href="#" className="hover:text-blue-600 transition">
           My Learning
         </Link>
-        <Link href="#" className="hover:text-blue-600 transition">
-          Achievements
+        <Link href="/request-roadmap" className="hover:text-blue-600 transition">
+          Roadmap AI
         </Link>
         <Link href={"/user/1"} className="hover:text-blue-600 transition">
           Profile

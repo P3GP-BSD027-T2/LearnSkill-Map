@@ -31,9 +31,8 @@ export default function RoadmapCatalog() {
     };
     fetchRoadmaps();
   }, []);
-
   const filteredRoadmaps = roadmaps
-    .filter((roadmap) => roadmap?.is_ai_generated === false)
+    .filter((roadmap) => roadmap?.is_ai_generated === true)
     .filter((roadmap) => {
       const name = roadmap?.name ?? "";
       const category = roadmap?.category ?? "";
