@@ -31,14 +31,14 @@ export default function Navbar({
       </div>
 
       <div className="hidden md:flex space-x-3 text-sm text-gray-700 gap-5 ">
-        <Link href={"/roadmap"} className="hover:text-blue-600 transition">
+        <Link href={"/skill"} className="hover:text-blue-600 transition">
           Browser
         </Link>
         <Link href="#" className="hover:text-blue-600 transition">
           My Learning
         </Link>
-        <Link href="#" className="hover:text-blue-600 transition">
-          Achievements
+        <Link href="/request-roadmap" className="hover:text-blue-600 transition">
+          Roadmap AI
         </Link>
         <Link
           href={`/user/${userId}`}
