@@ -1,5 +1,6 @@
 import { Search, Filter, Grid, List, Clock, Users, Star } from "lucide-react";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -87,8 +88,6 @@ export default function Home() {
           </button>
         </div>
       </div>
-
-      {/* Cards */}
       <div className="mt-8 grid md:grid-cols-2 gap-6">
         {/* Card 1 */}
         <div className="border rounded-xl p-6 shadow hover:shadow-lg transition">
@@ -276,6 +275,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer/>
 </main>
   );
 }
