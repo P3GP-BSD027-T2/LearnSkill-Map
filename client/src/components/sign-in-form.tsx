@@ -72,7 +72,7 @@ export default function SignInForm() {
           </div>
           <Input
             className="bg-gray-100"
-            placeholder="Enter your password"
+            placeholder="Minimum length is 8"
             onChange={(e) => {
               setSigninInput({
                 ...signInInput,

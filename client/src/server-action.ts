@@ -6,6 +6,7 @@ import axios, { AxiosError } from "axios";
 import { LoginSchema } from "./app/account/validation/login-validation";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Data } from "./app/user/[userId]/page";
 
 export type RegisterInput = {
   fullName: string;
@@ -109,4 +110,11 @@ export const logoutHandler = async () => {
   }
 
   redirect("/account");
+};
+
+export const getUserById = async (id: string | null = null): Promise<Data> => {
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user`, {
+    headers: { "x-user-id": id },
+  });
+  return data[0];
 };

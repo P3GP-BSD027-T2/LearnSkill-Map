@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import { Toaster } from "sonner";
 import { cookies } from "next/headers";
+import { verifyToken } from "@/helpers/jwt";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,10 +29,17 @@ export default async function RootLayout({
   const cookieStorage = await cookies();
   const token = cookieStorage.get("token")?.value;
 
+  let userId: string | null = null;
+
+  if (token) {
+    const decoded = verifyToken(token) as { _id: string };
+    userId = decoded._id;
+  }
+
   return (
     <html lang="en">
       <body>
-        {token ? <Navbar userToken={token} /> : <Navbar />}
+        {token ? <Navbar userToken={token} userId={userId} /> : <Navbar />}
         <main>{children}</main>
         <Toaster richColors position="top-center" />
       </body>

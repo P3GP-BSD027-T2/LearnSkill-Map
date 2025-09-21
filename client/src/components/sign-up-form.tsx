@@ -54,7 +54,7 @@ export default function SignUpForm() {
           <Label>Full Name</Label>
           <Input
             className="bg-gray-100"
-            placeholder="Enter your email"
+            placeholder="Jhon Doe"
             onChange={(e) => {
               setRegisterInput({ ...registerInput, fullName: e.target.value });
             }}
@@ -64,7 +64,7 @@ export default function SignUpForm() {
           <Label>Email</Label>
           <Input
             className="bg-gray-100"
-            placeholder="Enter your email"
+            placeholder="Example@mail.com"
             onChange={(e) => {
               setRegisterInput({ ...registerInput, email: e.target.value });
             }}
@@ -89,7 +89,7 @@ export default function SignUpForm() {
           </div>
           <Input
             className="bg-gray-100"
-            placeholder="Enter your password"
+            placeholder="Minimum lenght is 8"
             type={hidePassword ? "password" : "text"}
             onChange={(e) => {
               setRegisterInput({ ...registerInput, password: e.target.value });
@@ -115,7 +115,7 @@ export default function SignUpForm() {
           </div>
           <Input
             className="bg-gray-100"
-            placeholder="Enter your password"
+            placeholder="Minimum length is 8"
             type={hideConfirmPassword ? "password" : "text"}
             onChange={(e) => {
               setRegisterInput({
