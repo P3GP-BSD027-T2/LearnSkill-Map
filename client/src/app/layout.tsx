@@ -30,16 +30,33 @@ export default async function RootLayout({
   const token = cookieStorage.get("token")?.value;
 
   let userId: string | null = null;
+  let role: string | null = null;
+
+  type UserBasic = { _id: string };
+  type UserWithRole = { _id: string; role: string };
 
   if (token) {
-    const decoded = verifyToken(token) as { _id: string };
-    userId = decoded._id;
+    const userData = verifyToken(token) as UserBasic | UserWithRole;
+    if ("role" in userData) {
+      if (userData.role === "admin") {
+        userId = userData._id;
+        role = userData.role;
+      }
+    } else {
+      userId = userData._id;
+    }
   }
+
+  // console.log(role);
 
   return (
     <html lang="en">
       <body>
-        {token ? <Navbar userToken={token} userId={userId} /> : <Navbar />}
+        {token ? (
+          <Navbar userToken={token} userId={userId} role={role} />
+        ) : (
+          <Navbar />
+        )}
         <main>{children}</main>
         <Toaster richColors position="top-center" />
       </body>

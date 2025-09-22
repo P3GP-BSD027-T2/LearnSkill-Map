@@ -21,7 +21,10 @@ export default function SignInForm() {
 
       const res = await login(signInInput);
 
-      if (res.success) {
+      if (res.success && res.isAdmin) {
+        toast.success("Login success");
+        router.replace("/admin");
+      } else if (res.success) {
         toast.success("Login success");
         router.replace("/");
       }

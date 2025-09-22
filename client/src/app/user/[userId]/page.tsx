@@ -4,15 +4,6 @@ import RoadmapProgress from "@/components/RoadmapProgress";
 import { getUserById } from "@/server-action";
 import { headers } from "next/headers";
 
-export type Skills = {
-  _id: string;
-  name: string;
-  slug: string;
-  category: string;
-  description: string;
-  created_at: string;
-};
-
 export type Course = {
   _id: string;
   title: string;
@@ -29,40 +20,57 @@ export type Course = {
   purchased_at: string;
 };
 
-export type UserData = {
-  _id: string;
-  roadmap_id: string;
-  roadmap_title: string;
-  node_id: string;
-  node_title: string;
-  node_description: string;
-  order: number;
-  completed_at: string;
-  estimated_hours: number;
-  skills: Skills;
-};
-
 // export type UserCredential = {
 //   _id: string;
 //   name: string;
 //   email: string;
 // };
 
-export type Progress = UserData[];
+export type Progress = {
+  _id: string;
+  completed_at: string;
+};
+
+export type Node = {
+  _id: string;
+  title: string;
+  description: string;
+  order: number;
+  prerequisites: [string];
+  estimated_hours: number;
+  progress: Progress;
+};
+
+export type Roadmap = {
+  _id: string;
+  title: string;
+  created_at: string;
+  nodes: Node[];
+};
+
+export type Skill = {
+  _id: string;
+  name: string;
+  slug: string;
+  category: string;
+  description: string;
+  created_at: string;
+  roadmap: Roadmap;
+};
 
 export type Data = {
   owned_courses: Course[];
   _id: string;
   name: string;
   email: string;
-  progress: Progress;
+  skills: Skill[];
 };
 
 export default async function ProfilePage() {
   const headerList = await headers();
   const userId = headerList.get("x-user-id");
   const userData = await getUserById(userId);
-  // console.log(userData.owned_courses[0]);
+  // console.log(userData);
   return (
     <>
       <div className="flex flex-1 flex-col min-h-screen px-36 py-6 gap-10">

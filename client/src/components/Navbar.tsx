@@ -10,10 +10,13 @@ import { logoutHandler } from "@/server-action";
 export default function Navbar({
   userToken,
   userId,
+  role,
 }: {
   userToken?: string;
   userId?: string | null;
+  role?: string | null;
 }) {
+  if (role) return null;
   return (
     <nav className="w-full sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between shadow-md">
       <div className="flex items-center ">
@@ -37,7 +40,10 @@ export default function Navbar({
         <Link href="#" className="hover:text-blue-600 transition">
           My Learning
         </Link>
-        <Link href="/request-roadmap" className="hover:text-blue-600 transition">
+        <Link
+          href="/request-roadmap"
+          className="hover:text-blue-600 transition"
+        >
           Roadmap AI
         </Link>
         <Link

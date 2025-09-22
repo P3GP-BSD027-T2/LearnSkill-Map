@@ -2,16 +2,24 @@ import { Target } from "lucide-react";
 import { Progress } from "./ui/progress";
 import RoadmapCard from "./RoadmapCard";
 import { Data } from "@/app/user/[userId]/page";
+import Link from "next/link";
+import { getSkillBySlug } from "@/server-action";
 
-export default function RoadmapProgress({ data }: { data: Data }) {
-  const totalSkills = data.progress.length;
+export default async function RoadmapProgress({ data }: { data: Data }) {
+  const totalSkills = data.skills.length;
 
+  // const slug = data?.skills[0].slug;
+  // console.log(slug);
   let completedSkills: number = 0;
-  data.progress.forEach((val) => {
-    if (val.completed_at !== null) completedSkills++;
-  });
 
-  const userProgress = (completedSkills / totalSkills) * 100;
+  for (const val of data.skills) {
+    // console.log(val.roadmap.nodes);
+    const skillBySlug = await getSkillBySlug(val.slug);
+    if (skillBySlug.nodes.length === val.roadmap.nodes.length)
+      completedSkills++;
+  }
+
+  const completedSkillBar = (completedSkills / totalSkills) * 100;
   return (
     <>
       <div className="p-6 flex flex-col items-start gap-8 rounded-2xl shadow-sm w-full border">
@@ -20,19 +28,34 @@ export default function RoadmapProgress({ data }: { data: Data }) {
             <Target className=" text-blue-600 w-10 h-10" />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <p className="font-semibold text-xl">Your Roadmaps</p>
-            <div className="flex gap-2 items-center">
-              <Progress value={userProgress} className="[&>div]:bg-blue-500" />
-              <p>{userProgress}%</p>
+            <p className="font-semibold text-xl">My Roadmaps</p>
+            <div className="flex gap-4 items-center">
+              <Progress
+                value={completedSkillBar}
+                className="[&>div]:bg-blue-500"
+              />
+              <p>{completedSkillBar}%</p>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col px-4 w-full gap-4">
-          {data.progress.map((val, idx) => (
-            <RoadmapCard data={val} key={idx} />
-          ))}
+          {data.skills.map(async (val, idx) => {
+            const totalNode = await getSkillBySlug(val.slug);
+            return (
+              <RoadmapCard
+                data={val}
+                key={idx}
+                nodeLength={totalNode.nodes.length}
+              />
+            );
+          })}
         </div>
+        <Link href="/myroadmap" className="w-full">
+          <button className="px-4 py-2 w-full rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 hover:cursor-pointer transition">
+            View All My Roadmaps
+          </button>
+        </Link>
       </div>
     </>
   );

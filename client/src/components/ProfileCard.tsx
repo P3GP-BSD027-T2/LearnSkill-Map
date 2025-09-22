@@ -13,15 +13,7 @@ export default function ProfileCard({ data }: { data: Data }) {
       ? `${splittedName[0][0]}`
       : `${splittedName[0][0]}${splittedName[1][0]}`;
 
-  const totalSkills = data.progress.length;
-
-  let completedSkills: number = 0;
-  data.progress.forEach((val) => {
-    if (val.completed_at !== null) completedSkills++;
-  });
-
-  // const ownedCourse = data.owned_course.length;
-  // console.log(data?.owned_course?);
+  const totalRoadmap = data?.skills?.length;
 
   return (
     <Card className="p-6 flex flex-col items-center md:items-start gap-6 rounded-2xl shadow-sm w-full">
@@ -49,7 +41,7 @@ export default function ProfileCard({ data }: { data: Data }) {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-6 mt-2 text-center">
           <div className="flex flex-col items-center">
-            <p className="text-purple-600 font-bold text-lg">{totalSkills}</p>
+            <p className="text-purple-600 font-bold text-lg">{totalRoadmap}</p>
             <span className="text-sm text-muted-foreground">Roadmap</span>
           </div>
           {/* <div className="flex flex-col items-center">
@@ -70,7 +62,7 @@ export default function ProfileCard({ data }: { data: Data }) {
           </div>
         </div>
       </div>
-      <Link href="/" className="w-full">
+      <Link href="/mycourses" className="w-full">
         <button className="px-4 py-2 w-full rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 hover:cursor-pointer transition">
           View My Courses
         </button>
