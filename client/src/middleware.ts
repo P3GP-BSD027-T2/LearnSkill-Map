@@ -9,28 +9,40 @@ export const config = {
 export const middleware = async (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
 
+  // Daftar route publik yang tidak perlu token
+  const publicPaths = ["/account", "/", "/login", "/skill", "/AI", "/courses"];
+  const staticPaths = ["/_next", "/favicon.ico", "/assets"];
+
+  // Lewati route publik dan static
   if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/favicon.ico") ||
-    pathname.startsWith("/assets")
+    publicPaths.includes(pathname) ||
+    staticPaths.some((p) => pathname.startsWith(p))
   ) {
     return NextResponse.next();
   }
 
+  // Ambil token dari cookie
   const cookieStorage = await cookies();
   const token = cookieStorage.get("token");
 
   if (!token) {
-    // Tidak ada token, redirect ke login
+    // Token tidak ada → redirect ke halaman login/account
     return NextResponse.redirect(new URL("/account", request.url));
   }
 
   type UserBasic = { _id: string };
   type UserWithRole = { _id: string; role: string };
 
-  const userData = verifyToken(token.value) as UserBasic | UserWithRole;
+  let userData: UserBasic | UserWithRole;
 
-  // Kalau admin → hanya boleh di /admin
+  try {
+    userData = verifyToken(token.value) as UserBasic | UserWithRole;
+  } catch (err) {
+    console.error(err);
+    return NextResponse.redirect(new URL("/account", request.url));
+  }
+
+  // Admin → hanya boleh ke /admin
   if ("role" in userData && userData.role === "admin") {
     if (!pathname.startsWith("/admin")) {
       return NextResponse.redirect(new URL("/admin", request.url));
@@ -38,9 +50,7 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.next();
   }
 
-  // Kalau user biasa → hanya boleh di route user
   const userRoutes = ["/user", "/request-roadmap", "/mycourses", "/myroadmap"];
-
   if (userRoutes.some((route) => pathname.startsWith(route))) {
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-user-id", userData._id);
@@ -50,6 +60,5 @@ export const middleware = async (request: NextRequest) => {
     });
   }
 
-  // Kalau bukan route yang boleh user akses, lempar ke home
   return NextResponse.redirect(new URL("/", request.url));
 };

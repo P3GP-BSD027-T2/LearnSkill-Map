@@ -29,7 +29,6 @@ export default async function RootLayout({
   const cookieStorage = await cookies();
   const token = cookieStorage.get("token")?.value;
 
-  let userId: string | null = null;
   let role: string | null = null;
 
   type UserBasic = { _id: string };
@@ -39,11 +38,8 @@ export default async function RootLayout({
     const userData = verifyToken(token) as UserBasic | UserWithRole;
     if ("role" in userData) {
       if (userData.role === "admin") {
-        userId = userData._id;
         role = userData.role;
       }
-    } else {
-      userId = userData._id;
     }
   }
 
@@ -52,11 +48,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        {token ? (
-          <Navbar userToken={token} userId={userId} role={role} />
-        ) : (
-          <Navbar />
-        )}
+        {token ? <Navbar userToken={token} role={role} /> : <Navbar />}
         <main>{children}</main>
         <Toaster richColors position="top-center" />
       </body>

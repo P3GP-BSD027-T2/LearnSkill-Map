@@ -6,7 +6,7 @@ import axios, { AxiosError } from "axios";
 import { LoginSchema } from "./app/account/validation/login-validation";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Data } from "./app/user/[userId]/page";
+import { Data } from "./app/user/page";
 import { verifyToken } from "./helpers/jwt";
 
 export type RegisterInput = {
@@ -58,6 +58,13 @@ export type SkillBySlug = {
   is_ai_generated: boolean;
   roadmap: SkillBySlugRoadmap;
   nodes: SkillBySlugNode[];
+};
+
+export type Statistic = {
+  period: string;
+  sales: number;
+  revenue: number;
+  paid: number;
 };
 
 export const register = async (input: RegisterInput) => {
@@ -177,5 +184,12 @@ export const getSkillBySlug = async (slug: string): Promise<SkillBySlug> => {
     `https://n8n.self-host.my.id/webhook/4c167dde-64b5-44b8-86b9-73c5b92f88fc/lsm/skills/${slug}`
   );
 
+  return data;
+};
+
+export const getStatistic = async (): Promise<Statistic[]> => {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/admin/stats`
+  );
   return data;
 };

@@ -9,11 +9,9 @@ import { logoutHandler } from "@/server-action";
 
 export default function Navbar({
   userToken,
-  userId,
   role,
 }: {
   userToken?: string;
-  userId?: string | null;
   role?: string | null;
 }) {
   if (role) return null;
@@ -46,10 +44,7 @@ export default function Navbar({
         >
           Roadmap AI
         </Link>
-        <Link
-          href={`/user/${userId}`}
-          className="hover:text-blue-600 transition"
-        >
+        <Link href={`/user`} className="hover:text-blue-600 transition">
           Profile
         </Link>
       </div>

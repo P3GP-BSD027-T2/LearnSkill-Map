@@ -3,7 +3,7 @@
 import { Card } from "./ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Mail } from "lucide-react";
-import { Data } from "@/app/user/[userId]/page";
+import { Data } from "@/app/user/page";
 import Link from "next/link";
 
 export default function ProfileCard({ data }: { data: Data }) {

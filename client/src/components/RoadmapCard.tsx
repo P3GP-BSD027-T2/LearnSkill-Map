@@ -3,28 +3,27 @@
 import { CheckCircle2, Circle } from "lucide-react";
 import { Card } from "./ui/card";
 import Link from "next/link";
-import { Skill } from "@/app/user/[userId]/page";
+import { Skill } from "@/app/user/page";
 import { Progress } from "./ui/progress";
 
-export default function RoadmapCard({
-  data,
-  nodeLength,
-}: {
-  data: Skill;
-  nodeLength: number;
-}) {
-  // console.log(nodeLength);
+export default function RoadmapCard({ data }: { data: Skill }) {
+  // console.log(data);
   // const skillBySlug = await getSkillBySlug(val.slug);
-  const skillProgress = Math.ceil(
-    (data.roadmap.nodes.length / nodeLength) * 100
-  );
+  const totalNode = data.roadmap.nodes.length;
+  let completedNode: number = 0;
+
+  data.roadmap.nodes.forEach((val) => {
+    if (val.progress.completed_at !== null) completedNode++;
+  });
+  // console.log(totalNode);
+  const skillProgress = Math.ceil((completedNode / totalNode) * 100);
   return (
     <>
       <Card className="p-4 rounded-xl shadow-sm transition-all duration-200">
         <div className="flex flex-col gap-2 w-full">
           <div className="flex w-full justify-between">
             <h3 className="text-lg font-semibold">{data.name}</h3>
-            {nodeLength !== data.roadmap.nodes.length ? (
+            {totalNode !== completedNode ? (
               <Circle className="w-7 h-7 text-gray-600 mt-1" />
             ) : (
               <CheckCircle2 className="w-7 h-7 text-green-500 mt-1" />
@@ -42,7 +41,7 @@ export default function RoadmapCard({
 
           <div className="flex w-full justify-between items-center mt-2">
             <p className="text-xs text-gray-500 mt-1">
-              {nodeLength !== data.roadmap.nodes.length ? (
+              {totalNode !== completedNode ? (
                 "Not Completed Yet"
               ) : (
                 <>

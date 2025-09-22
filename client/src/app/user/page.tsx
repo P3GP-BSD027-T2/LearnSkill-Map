@@ -70,7 +70,7 @@ export default async function ProfilePage() {
   const headerList = await headers();
   const userId = headerList.get("x-user-id");
   const userData = await getUserById(userId);
-  // console.log(userData);
+  // console.log(userData.skills[0].roadmap.nodes[0].progress);
   return (
     <>
       <div className="flex flex-1 flex-col min-h-screen px-36 py-6 gap-10">

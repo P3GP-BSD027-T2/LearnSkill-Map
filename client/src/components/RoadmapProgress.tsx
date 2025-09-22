@@ -1,9 +1,8 @@
 import { Target } from "lucide-react";
 import { Progress } from "./ui/progress";
 import RoadmapCard from "./RoadmapCard";
-import { Data } from "@/app/user/[userId]/page";
+import { Data } from "@/app/user/page";
 import Link from "next/link";
-import { getSkillBySlug } from "@/server-action";
 
 export default async function RoadmapProgress({ data }: { data: Data }) {
   const totalSkills = data.skills.length;
@@ -12,12 +11,13 @@ export default async function RoadmapProgress({ data }: { data: Data }) {
   // console.log(slug);
   let completedSkills: number = 0;
 
-  for (const val of data.skills) {
-    // console.log(val.roadmap.nodes);
-    const skillBySlug = await getSkillBySlug(val.slug);
-    if (skillBySlug.nodes.length === val.roadmap.nodes.length)
-      completedSkills++;
-  }
+  data.skills.forEach((val) => {
+    let completedNode: number = 0;
+    val.roadmap.nodes.forEach((val2) => {
+      if (val2.progress.completed_at !== null) completedNode++;
+    });
+    if (val.roadmap.nodes.length === completedNode) completedSkills++;
+  });
 
   const completedSkillBar = (completedSkills / totalSkills) * 100;
   return (
@@ -40,16 +40,9 @@ export default async function RoadmapProgress({ data }: { data: Data }) {
         </div>
 
         <div className="flex flex-col px-4 w-full gap-4">
-          {data.skills.map(async (val, idx) => {
-            const totalNode = await getSkillBySlug(val.slug);
-            return (
-              <RoadmapCard
-                data={val}
-                key={idx}
-                nodeLength={totalNode.nodes.length}
-              />
-            );
-          })}
+          {data.skills.map(async (val, idx) => (
+            <RoadmapCard data={val} key={idx} />
+          ))}
         </div>
         <Link href="/myroadmap" className="w-full">
           <button className="px-4 py-2 w-full rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 hover:cursor-pointer transition">
