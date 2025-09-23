@@ -1,8 +1,16 @@
 import AdminCoursesTable from "@/components/CoursesTable";
+import { verifyToken } from "@/helpers/jwt";
 import { getCourses } from "@/server-action";
+import { cookies } from "next/headers";
 
 export default async function AdminCoursesPage() {
-  const courses = await getCourses();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  if (!token) return [];
+
+  const userData = verifyToken(token) as { _id: string; role?: string };
+  const userId = userData._id;
+  const courses = await getCourses(userId);
   // console.log(courses);
   return (
     <>

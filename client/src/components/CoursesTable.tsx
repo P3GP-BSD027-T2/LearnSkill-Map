@@ -9,12 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Course, deleteCourse } from "@/server-action";
+import { Course, deleteCourse, updateCourse } from "@/server-action";
 import { Pencil, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { rupiah } from "@/helpers/rupiahFormat";
 import { useRouter } from "next/navigation";
+import { Switch } from "./ui/switch";
 
 export default function AdminCoursesTable({ courses }: { courses: Course[] }) {
   const [courseList, setCourseList] = useState(courses);
@@ -62,7 +63,33 @@ export default function AdminCoursesTable({ courses }: { courses: Course[] }) {
               <TableCell>
                 {val.price === 0 ? "Free" : rupiah(val.price)}
               </TableCell>
-              <TableCell>{val.status}</TableCell>
+              <TableCell>
+                <span>{val.status}</span>
+                <Switch
+                  checked={val.status === "published"}
+                  // className="sr-only peer"
+                  onCheckedChange={async (checked: boolean) => {
+                    const newStatus = checked ? "published" : "unpublished";
+                    try {
+                      // panggil server action / API untuk update status
+                      await updateCourse(
+                        { ...val, status: newStatus },
+                        val._id
+                      );
+
+                      // update state agar UI langsung berubah
+                      setCourseList((prev) =>
+                        prev.map((c) =>
+                          c._id === val._id ? { ...c, status: newStatus } : c
+                        )
+                      );
+                    } catch (err) {
+                      console.error(err);
+                      alert("Failed to update status");
+                    }
+                  }}
+                />
+              </TableCell>
               <TableCell className="flex gap-2">
                 <Button
                   className="bg-white text-black hover:text-white hover:bg-red-500"

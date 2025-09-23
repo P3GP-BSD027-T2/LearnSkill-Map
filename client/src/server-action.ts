@@ -247,7 +247,15 @@ export const getStatistic = async (): Promise<Statistic[]> => {
   return data;
 };
 
-export const getCourses = async (): Promise<Course[]> => {
+export const getCourses = async (userId?: string): Promise<Course[]> => {
+  if (userId) {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/courses`,
+      { headers: { "x-user-id": userId } }
+    );
+    return data;
+  }
+
   const { data } = await axios.get(
     `${process.env.NEXT_PUBLIC_BASE_URL}/courses`
   );

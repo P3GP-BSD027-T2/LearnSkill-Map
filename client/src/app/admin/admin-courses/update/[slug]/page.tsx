@@ -1,4 +1,5 @@
 import EditCourseForm from "@/components/EditCourseForm";
+
 import { getCourseBySlug } from "@/server-action";
 
 interface Props {
