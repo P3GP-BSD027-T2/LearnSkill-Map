@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Clock, Tag } from "lucide-react"; // ⏰ jam & 💲 harga
-import { checkToken } from "@/server-action";
+import { checkToken, getUserById } from "@/server-action";
 import { useRouter } from "next/navigation";
 
 type Course = {
@@ -54,16 +54,25 @@ export default function CoursesPage() {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
   const buttonPressHandler = async (course: Course) => {
+    // apakah berbayar
     if (course.price === 0) {
       setSelectedCourse(course);
     } else {
-      const hasToken = await checkToken();
-      console.log(hasToken);
-
-      if (!hasToken) {
-        router.replace("/account");
+      const res = await checkToken();
+      const data = await getUserById(res.userId);
+      // console.log(data);
+      const ownedCourseId: string[] = [];
+      data?.owned_courses?.forEach((val) => {
+        ownedCourseId.push(val._id);
+      });
+      if (!res.hasToken) {
+        router.replace("/account"); // belum login harus login dan bayar
       } else {
-        setSelectedCourse(course);
+        if (ownedCourseId.includes(course._id)) {
+          setSelectedCourse(course); // bisa akses
+        } else {
+          router.replace(`/payment/${course.slug}`); // harus beli
+        }
       }
     }
   };
