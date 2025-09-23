@@ -35,13 +35,10 @@ export default function Navbar({
         <Link href={"/skill"} className="hover:text-blue-600 transition">
           Browser
         </Link>
-        <Link href="#" className="hover:text-blue-600 transition">
+        <Link href={"/courses"} className="hover:text-blue-600 transition">
           My Learning
         </Link>
-        <Link
-          href="/request-roadmap"
-          className="hover:text-blue-600 transition"
-        >
+        <Link href={"/AI"} className="hover:text-blue-600 transition">
           Roadmap AI
         </Link>
         <Link href={`/user`} className="hover:text-blue-600 transition">
@@ -57,7 +54,7 @@ export default function Navbar({
         {userToken ? (
           <Button
             type="button"
-            className="rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 transition"
+            className="rounded-md bg-red-600 text-white text-sm hover:bg-blue-700 transition"
             onClick={logoutHandler}
           >
             Logout
