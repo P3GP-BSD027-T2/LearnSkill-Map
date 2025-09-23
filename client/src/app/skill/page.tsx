@@ -43,7 +43,7 @@ export default function RoadmapCatalog() {
     });
 
   if (loading) {
-    return <p className="text-center py-20 text-gray-500">Loading roadmaps...</p>;
+    return <p className="text-center py-20 text-gray-500">Loading ...</p>;
   }
 
   return (

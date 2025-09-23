@@ -28,9 +28,10 @@ export default function Page() {
           },
         }
       );
+      
 
       setRoadmap(res.data);
-      router.push("/AI"); 
+      router.push(`/AI/${res.data.slug}`); 
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || "Terjadi kesalahan");
     } finally {

@@ -123,7 +123,7 @@ export default function AIDetail() {
         { doneSteps }
       );
     } catch (err) {
-      console.error("Failed:", err);
+      console.error("Gagal take roadmap:", err);
     }
   };
 
@@ -249,7 +249,7 @@ export default function AIDetail() {
 
       <Dialog open={showTrackDialog && isTaken} onOpenChange={setShowTrackDialog}>
         <DialogContent className="sm:max-w-md">
-         <DialogHeader className="text-blue-600">
+          <DialogHeader>
             <DialogTitle>How to update your progress</DialogTitle>
           </DialogHeader>
           <div className="text-sm text-gray-600 space-y-2">
