@@ -7,7 +7,14 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { logoutHandler } from "@/server-action";
 
-export default function Navbar({ userToken }: { userToken?: string }) {
+export default function Navbar({
+  userToken,
+  role,
+}: {
+  userToken?: string;
+  role?: string | null;
+}) {
+  if (role) return null;
   return (
     <nav className="w-full sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between shadow-md">
       <div className="flex items-center ">
@@ -29,12 +36,12 @@ export default function Navbar({ userToken }: { userToken?: string }) {
           Browser
         </Link>
         <Link href={"/courses"} className="hover:text-blue-600 transition">
-          My Learning
+          Courses
         </Link>
         <Link href={"/AI"} className="hover:text-blue-600 transition">
           Roadmap AI
         </Link>
-        <Link href={"/user/1"} className="hover:text-blue-600 transition">
+        <Link href={`/user`} className="hover:text-blue-600 transition">
           Profile
         </Link>
       </div>

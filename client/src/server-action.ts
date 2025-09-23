@@ -6,6 +6,8 @@ import axios, { AxiosError } from "axios";
 import { LoginSchema } from "./app/account/validation/login-validation";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Data } from "./app/user/page";
+import { verifyToken } from "./helpers/jwt";
 
 export type RegisterInput = {
   fullName: string;
@@ -17,6 +19,52 @@ export type RegisterInput = {
 export type LoginInput = {
   email: string;
   password: string;
+};
+
+export type SkillBySlugRoadmap = {
+  _id: string;
+  skill_id: string;
+  title: string;
+  created_at: string;
+};
+
+export type SkillBySlugCourse = {
+  _id: string;
+  title: string;
+  price: number;
+  thumbnail: string;
+  duration: number;
+  relevance_score: number;
+};
+
+export type SkillBySlugNode = {
+  _id: string;
+  roadmap_id: string;
+  title: string;
+  description: string;
+  order: number;
+  estimated_hours: number;
+  prerequisites: string[];
+  courses: SkillBySlugCourse[];
+};
+
+export type SkillBySlug = {
+  _id: string;
+  name: string;
+  slug: string;
+  category: string;
+  description: string;
+  created_at: string;
+  is_ai_generated: boolean;
+  roadmap: SkillBySlugRoadmap;
+  nodes: SkillBySlugNode[];
+};
+
+export type Statistic = {
+  period: string;
+  sales: number;
+  revenue: number;
+  paid: number;
 };
 
 export const register = async (input: RegisterInput) => {
@@ -80,6 +128,19 @@ export const login = async (input: LoginInput) => {
         sameSite: "strict",
       });
     }
+    type UserBasic = { _id: string };
+    type UserWithRole = { _id: string; role: string };
+
+    const userData = verifyToken(data?.access_token) as
+      | UserBasic
+      | UserWithRole;
+    // console.log(typeof userData);
+
+    if ("role" in userData) {
+      if (userData.role === "admin") {
+        return { success: true, isAdmin: true };
+      }
+    }
 
     return { success: true };
   } catch (err) {
@@ -109,4 +170,26 @@ export const logoutHandler = async () => {
   }
 
   redirect("/account");
+};
+
+export const getUserById = async (id: string | null = null): Promise<Data> => {
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user`, {
+    headers: { "x-user-id": id },
+  });
+  return data[0];
+};
+
+export const getSkillBySlug = async (slug: string): Promise<SkillBySlug> => {
+  const { data } = await axios.get(
+    `https://n8n.self-host.my.id/webhook/4c167dde-64b5-44b8-86b9-73c5b92f88fc/lsm/skills/${slug}`
+  );
+
+  return data;
+};
+
+export const getStatistic = async (): Promise<Statistic[]> => {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/admin/stats`
+  );
+  return data;
 };
