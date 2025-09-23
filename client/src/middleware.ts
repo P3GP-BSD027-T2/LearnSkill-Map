@@ -10,13 +10,23 @@ export const middleware = async (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
 
   // Daftar route publik yang tidak perlu token
-  const publicPaths = ["/account", "/", "/login", "/skill", "/AI", "/courses"];
+  const publicPaths = [
+    "/account",
+    "/",
+    "/skill",
+    "/AI",
+    "/courses",
+    "/skill/[slug]",
+  ];
   const staticPaths = ["/_next", "/favicon.ico", "/assets"];
 
   // Lewati route publik dan static
   if (
     publicPaths.includes(pathname) ||
-    staticPaths.some((p) => pathname.startsWith(p))
+    staticPaths.some((p) => pathname.startsWith(p)) ||
+    pathname.startsWith("/skill") ||
+    pathname.startsWith("/AI") ||
+    pathname.startsWith("/courses")
   ) {
     return NextResponse.next();
   }

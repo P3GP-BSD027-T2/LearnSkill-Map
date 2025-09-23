@@ -50,7 +50,7 @@ export default function RoadmapCard({ data }: { data: Skill }) {
                 </>
               )}
             </p>
-            <Link href="/">
+            <Link href={`/skill/${data.slug}`}>
               <button className="px-4 py-2 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 transition hover:cursor-pointer">
                 View Tracker
               </button>

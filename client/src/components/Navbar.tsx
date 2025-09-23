@@ -36,7 +36,7 @@ export default function Navbar({
           Browser
         </Link>
         <Link href={"/courses"} className="hover:text-blue-600 transition">
-          My Learning
+          Courses
         </Link>
         <Link href={"/AI"} className="hover:text-blue-600 transition">
           Roadmap AI
