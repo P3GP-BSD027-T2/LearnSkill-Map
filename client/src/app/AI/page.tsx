@@ -1,8 +1,9 @@
 "use client";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Sparkles } from "lucide-react";
+import { getUserRoadmaps } from "@/server-action"; 
 
 export default function RoadmapCatalog() {
   const [roadmaps, setRoadmaps] = useState<any[]>([]);
@@ -13,11 +14,9 @@ export default function RoadmapCatalog() {
   useEffect(() => {
     const fetchRoadmaps = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/skills`
-        );
-        if (Array.isArray(res.data)) {
-          setRoadmaps(res.data);
+        const res = await getUserRoadmaps(); 
+        if (Array.isArray(res)) {
+          setRoadmaps(res);
         } else {
           setRoadmaps([]);
         }
@@ -36,25 +35,24 @@ export default function RoadmapCatalog() {
     .filter((roadmap) => {
       const name = roadmap?.name ?? "";
       const category = roadmap?.category ?? "";
-      const matchesSearch = name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      const matchesSearch = name.toLowerCase().includes(search.toLowerCase());
       const matchesFilter = filter === "All" || category === filter;
       return matchesSearch && matchesFilter;
     });
 
   if (loading) {
-    return <p className="text-center py-20"> Loading your AI roadmaps...</p>;
+    return <p className="text-center py-20 text-gray-500">Loading ...</p>;
   }
 
   return (
     <main className="bg-gradient-to-b from-[#F9FBFF] to-white min-h-screen py-16 px-6">
       <div className="max-w-4xl mx-auto text-center mb-12">
         <h1 className="text-4xl font-bold text-[#375EEB]">
-        Discover Your AI-Created Roadmap
+          Discover Your AI-Created Roadmap
         </h1>
         <p className="text-gray-600 mt-4 text-lg">
-         curated AI-generated roadmaps to master any skill — faster, smarter, and step by step.
+          Curated AI-generated roadmaps to master any skill — faster, smarter,
+          and step by step.
         </p>
       </div>
 
@@ -82,7 +80,9 @@ export default function RoadmapCatalog() {
 
       <div className="max-w-6xl mx-auto">
         {filteredRoadmaps.length === 0 ? (
-          <p className="text-center text-gray-500">No roadmaps found. Try another search 🚧</p>
+          <p className="text-center text-gray-500">
+            No roadmaps found. Try another search
+          </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRoadmaps.map((roadmap, index) => (
@@ -103,7 +103,7 @@ export default function RoadmapCatalog() {
                 </div>
                 <Link href={`/AI/${roadmap.slug}`}>
                   <button className="mt-6 px-4 py-2 bg-[#375EEB] text-white rounded-lg text-sm hover:bg-blue-700 transition w-full">
-                    See Details →
+                    See Details
                   </button>
                 </Link>
               </div>
@@ -111,7 +111,6 @@ export default function RoadmapCatalog() {
           </div>
         )}
 
-        {/* CTA Button */}
         <div className="max-w-6xl mx-auto mt-14 flex justify-center">
           <Link href={`/request-roadmap`}>
             <button className="px-6 py-3 bg-[#28C9B8] text-white rounded-xl text-sm font-medium hover:bg-[#20a89b] transition flex items-center gap-2 shadow-md">

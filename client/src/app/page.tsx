@@ -29,20 +29,22 @@ export default function Home() {
         AI-Powered Learning Paths
       </span>
     </div>
-
-<h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 text-center leading-tight mb-7">
+<h1 className="text-4xl md:text-6xl font-black text-gray-900 text-center leading-tight mb-6 tracking-tight">
   Master Any Skill with
-  <span className="block mt-2 text-4xl text-blue-600">Intelligent Roadmaps</span>
+  <span className="block mt-3 text-4xl md:text-5xl text-blue-600">
+    Intelligent Roadmaps
+  </span>
 </h1>
 
-    <p className="mt-4 text-lg text-gray-600 text-center ">
-      Navigate your learning journey with personalized, visual roadmaps.{" "}
-      Track progress, unlock achievements, and accelerate your professional
-      growth.
-    </p>
-    <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center">
-      <Link href="/skill" className="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition inline-block text-center">
-        Explore Roadmaps →
+<p className="mt-4 text-lg text-gray-600 text-center max-w-7xl mx-auto">
+  Navigate your learning journey with personalized, visual roadmaps. Track
+  progress, unlock achievements, and accelerate your professional growth.
+</p>
+
+  
+    <div className="flex flex-col sm:flex-row gap-8 mt-8 justify-center">
+      <Link href="/skill" className="px-5 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition inline-block text-center">
+        Explore Roadmaps 
       </Link>
       <Link href = "/request-roadmap" className="px-6 py-3 rounded-lg border border-green-500 text-green-600 font-medium hover:bg-green-50 transition">
         Create Custom Path
@@ -155,7 +157,7 @@ export default function Home() {
       </div>
 
       <div className="mt-10 text-center">
-        <Link href={"/skill"} className="px-6 py-2 rounded-lg border border-blue-500 text-blue-600 font-medium hover:bg-blue-50 transition">
+        <Link href={"/skill"} className="px-6 py-2 rounded-lg border border-blue-500 text-[#375EEB] font-medium hover:bg-blue-50 transition">
           View All Roadmaps →
         </Link>
       </div>
