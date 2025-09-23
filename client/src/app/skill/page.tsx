@@ -1,7 +1,9 @@
 "use client";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
 
 export default function RoadmapCatalog() {
   const [roadmaps, setRoadmaps] = useState<any[]>([]);
@@ -12,14 +14,12 @@ export default function RoadmapCatalog() {
   useEffect(() => {
     const fetchRoadmaps = async () => {
       try {
-        console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/skills`
         );
         if (Array.isArray(res.data)) {
           setRoadmaps(res.data);
         } else {
-          console.warn("Unexpected response:", res.data);
           setRoadmaps([]);
         }
       } catch (err) {
@@ -37,41 +37,39 @@ export default function RoadmapCatalog() {
     .filter((roadmap) => {
       const name = roadmap?.name ?? "";
       const category = roadmap?.category ?? "";
-      const matchesSearch = name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      const matchesSearch = name.toLowerCase().includes(search.toLowerCase());
       const matchesFilter = filter === "All" || category === filter;
       return matchesSearch && matchesFilter;
     });
 
   if (loading) {
-    return <p className="text-center py-20">Loading roadmaps...</p>;
+    return <p className="text-center py-20 text-gray-500">Loading roadmaps...</p>;
   }
 
   return (
     <main className="bg-gray-50 min-h-screen py-12 px-6">
-      <div className="max-w-6xl mx-auto text-center mb-10">
-        <h1 className="text-3xl font-bold text-[#375EEB]">Browse Skills</h1>
-        <p className="text-gray-600 mt-2">
+     
+      <div className="max-w-6xl mx-auto text-center mb-12">
+        <h1 className="text-4xl font-bold text-[#375EEB]">Browse Skills</h1>
+        <p className="text-gray-600 mt-3 text-lg max-w-2xl mx-auto">
           Explore curated learning paths designed to help you master new skills
           step by step.
         </p>
       </div>
 
-      {/* Search & Filter */}
-      <div className="max-w-6xl mx-auto mb-8 flex justify-center">
+      <div className="max-w-6xl mx-auto mb-10 flex justify-center">
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
           <input
             type="text"
             placeholder="Search roadmap..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:w-120 px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28C9B8]"
+            className="w-full sm:w-80 px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28C9B8] bg-white shadow-sm"
           />
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28C9B8]"
+            className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28C9B8] bg-white shadow-sm"
           >
             <option value="All">All Categories</option>
             <option value="Web Development">Web Development</option>
@@ -82,33 +80,40 @@ export default function RoadmapCatalog() {
       </div>
 
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-xl font-semibold mb-4 text-[#375EEB]">
+        <h2 className="text-xl font-semibold mb-5 text-[#375EEB]">
           All Skills
         </h2>
         {filteredRoadmaps.length === 0 ? (
-          <p className="text-center text-gray-500">No roadmaps found.</p>
+          <p className="text-center text-gray-500 py-10">
+            No roadmaps found.
+          </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredRoadmaps.map((roadmap, index) => (
               <div
                 key={roadmap.id ?? `roadmap-${index}`}
-                className="bg-white rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col justify-between border border-gray-200"
+                className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-6 flex flex-col justify-between border border-gray-200"
               >
                 <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-medium text-[#28C9B8] bg-[#E6F9F6] px-2 py-0.5 rounded-full">
+                      {roadmap?.category ?? "General"}
+                    </span>
+                    <span className="text-xs font-medium text-[#375EEB] bg-[#EEF2FF] px-2 py-0.5 rounded-full">
+                      {roadmap?.level ?? "Beginner"}
+                    </span>
+                  </div>
                   <h3 className="text-lg font-semibold mb-2 text-gray-800">
                     {roadmap?.name ?? "Untitled"}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-3">
+                  <p className="text-gray-600 text-sm line-clamp-3">
                     {roadmap?.description ?? "No description yet."}
                   </p>
-                  <p className="text-xs text-[#28C9B8] font-medium">
-                    {roadmap?.level ?? "Beginner"}
-                  </p>
                 </div>
-                <Link href={`/skill/${roadmap.slug}`}>
-                  <button className="mt-4 px-4 py-2 bg-[#375EEB] text-white rounded-lg text-sm hover:bg-blue-700 transition">
+                <Link href={`/skill/${roadmap.slug}`} className="mt-6 w-full">
+                  <Button className="w-full bg-[#375EEB] hover:bg-blue-700 text-white font-medium">
                     See Details
-                  </button>
+                  </Button>
                 </Link>
               </div>
             ))}

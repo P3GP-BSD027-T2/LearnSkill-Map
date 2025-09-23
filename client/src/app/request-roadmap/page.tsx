@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [project, setProject] = useState("");
   const [loading, setLoading] = useState(false);
   const [roadmap, setRoadmap] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,23 +18,21 @@ export default function Page() {
     setError(null);
 
     try {
-      const res = await fetch("/api/generate-roadmap", {
-        method: "POST",
-        headers: {
-          "Content-Type": "x-www-form-urlencoded",
-        },
-        body: JSON.stringify({ skill_title: project }),
-      });
+      const res = await axios.post(
+        "https://n8n.self-host.my.id/webhook/lsm/generate-roadmap",
+        new URLSearchParams({ skill_title: project }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "x-user-id": "68cbcf449bd39765290f0998",
+          },
+        }
+      );
 
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`API error: ${res.status} → ${text}`);
-      }
-
-      const data = await res.json();
-      setRoadmap(data);
+      setRoadmap(res.data);
+      router.push("/AI"); 
     } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan");
+      setError(err.response?.data?.message || err.message || "Terjadi kesalahan");
     } finally {
       setLoading(false);
     }
@@ -40,19 +41,17 @@ export default function Page() {
   return (
     <main className="min-h-screen flex flex-col items-center bg-[#F9FBFF] px-4 pt-10">
       <div className="text-center mb-10">
-        <span className="inline-flex items-center gap-2 px-4 py-1 text-sm rounded-full bg-indigo-100 text-indigo-600 font-medium shadow-sm mb-5">
+        <span className="inline-flex items-center gap-2 px-4 py-1 text-sm rounded-full bg-yellow-100 text-yellow-600 font-medium shadow-sm mb-5">
           <Sparkles className="w-4 h-4" />
           AI Roadmap Generator
         </span>
-        <h1 className="text-2xl font-bold mt-4 text-gray-800 mb-5">
-          Generate Your Project Roadmap
+        <h1 className="text-4xl font-bold text-[#375EEB] mb-5 mt-5">
+          Generate Your Custom Roadmap
         </h1>
         <p className="text-gray-600 mt-2 max-w-md mx-auto">
           Describe your project, and let AI create a roadmap for you.
         </p>
       </div>
-
-      {/* Form */}
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-xl bg-white p-6 rounded-xl shadow-sm border border-gray-100"

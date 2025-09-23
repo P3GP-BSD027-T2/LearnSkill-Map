@@ -7,7 +7,7 @@ export const config = {
 };
 
 export const middleware = async (request: NextRequest) => {
-  if (request.nextUrl.pathname.startsWith("/user")) {
+  if (request.nextUrl.pathname.startsWith("/user")||request.nextUrl.pathname.startsWith("/request-roadmap")) {
     const cookieStorage = await cookies();
     const token = cookieStorage.get("token");
 
