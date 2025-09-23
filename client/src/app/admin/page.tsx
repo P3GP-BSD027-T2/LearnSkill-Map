@@ -1,13 +1,7 @@
 import { AdminChart } from "@/components/AdminChart";
 import StatisticCard from "@/components/StatisticCard";
+import { rupiah } from "@/helpers/rupiahFormat";
 import { getStatistic } from "@/server-action";
-
-const rupiah = (number: number): string => {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  }).format(number);
-};
 
 export default async function AdminPage() {
   const statistics = await getStatistic();

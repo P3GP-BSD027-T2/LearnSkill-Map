@@ -60,7 +60,13 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.next();
   }
 
-  const userRoutes = ["/user", "/request-roadmap", "/mycourses", "/myroadmap"];
+  const userRoutes = [
+    "/user",
+    "/request-roadmap",
+    "/mycourses",
+    "/myroadmap",
+    "/courses",
+  ];
   if (userRoutes.some((route) => pathname.startsWith(route))) {
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-user-id", userData._id);

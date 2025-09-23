@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Clock, Tag } from "lucide-react"; // ⏰ jam & 💲 harga
+import { checkToken } from "@/server-action";
+import { useRouter } from "next/navigation";
 
 type Course = {
   _id: string;
@@ -46,9 +48,25 @@ async function getCourses(): Promise<Course[]> {
 }
 
 export default function CoursesPage() {
+  const router = useRouter();
   const [courses, setCourses] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+
+  const buttonPressHandler = async (course: Course) => {
+    if (course.price === 0) {
+      setSelectedCourse(course);
+    } else {
+      const hasToken = await checkToken();
+      console.log(hasToken);
+
+      if (!hasToken) {
+        router.replace("/account");
+      } else {
+        setSelectedCourse(course);
+      }
+    }
+  };
 
   useEffect(() => {
     getCourses()
@@ -81,14 +99,14 @@ export default function CoursesPage() {
                 key={course._id}
                 className="bg-white rounded-2xl shadow-sm hover:shadow-md transition border flex flex-col overflow-hidden"
               >
-                    <div className="mt-2 flex items-center justify-end gap-1 text-sm font-medium text-gray-700">
-                    <Tag className="w-4 h-4 text-[#375EEB]" />
-                    {course.price === 0
-                      ? "Free"
-                      : `${course.currency} ${course.price.toLocaleString(
-                          "id-ID"
-                        )}`}
-                  </div>
+                <div className="mt-2 flex items-center justify-end gap-1 text-sm font-medium text-gray-700">
+                  <Tag className="w-4 h-4 text-[#375EEB]" />
+                  {course.price === 0
+                    ? "Free"
+                    : `${course.currency} ${course.price.toLocaleString(
+                        "id-ID"
+                      )}`}
+                </div>
                 <div className="relative h-40 w-full">
                   <img
                     src={course.thumbnail}
@@ -97,7 +115,6 @@ export default function CoursesPage() {
                   />
                 </div>
 
-             
                 <div className="p-5 flex-1 flex flex-col">
                   <h2 className="font-semibold text-lg text-gray-800 mb-2 line-clamp-2">
                     {course.title}
@@ -107,7 +124,6 @@ export default function CoursesPage() {
                   </p>
 
                   <div className="mt-4 flex justify-between items-center text-xs">
-                 
                     <span className="px-2 py-1 rounded bg-indigo-50 text-indigo-600">
                       {course.level}
                     </span>
@@ -118,11 +134,17 @@ export default function CoursesPage() {
                     </span>
                   </div>
 
-            
-
-                  <Button
+                  {/* <Button
                     className="mt-5 w-full bg-[#375EEB]"
                     onClick={() => setSelectedCourse(course)}
+                  >
+                    See Details
+                  </Button> */}
+                  <Button
+                    className="mt-5 w-full bg-[#375EEB]"
+                    onClick={() => {
+                      buttonPressHandler(course);
+                    }}
                   >
                     See Details
                   </Button>

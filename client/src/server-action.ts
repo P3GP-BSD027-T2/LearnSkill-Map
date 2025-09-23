@@ -67,6 +67,23 @@ export type Statistic = {
   paid: number;
 };
 
+export type Course = {
+  _id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  thumbnail: string;
+  price: number;
+  currency: string;
+  duration: number;
+  level: string;
+  tags: string[];
+  content: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export const register = async (input: RegisterInput) => {
   // console.log(fullName, email, password, confirmPassword);
 
@@ -192,4 +209,26 @@ export const getStatistic = async (): Promise<Statistic[]> => {
     `${process.env.NEXT_PUBLIC_BASE_URL}/admin/stats`
   );
   return data;
+};
+
+export const getCourses = async (): Promise<Course[]> => {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/courses`
+  );
+  return data;
+};
+
+export const checkToken = async (): Promise<boolean> => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+
+  if (!token) return false;
+
+  try {
+    verifyToken(token);
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };
