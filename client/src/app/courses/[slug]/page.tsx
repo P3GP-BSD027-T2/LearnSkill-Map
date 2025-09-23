@@ -3,12 +3,12 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Clock, Layers, Star } from "lucide-react";
 
 interface Course {
   _id: string;
   title: string;
-  summary?: string;
-  price?: number;
+  summary?: string,
   currency?: string;
   thumbnail?: string;
   duration?: number;
@@ -38,39 +38,59 @@ export default function CourseDetail() {
     if (slug) fetchData();
   }, [slug]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!course) return <p>Course tidak ditemukan</p>;
+  if (loading) return <p className="text-center py-20">Loading course...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
+  if (!course) return <p className="text-center text-gray-500">Course tidak ditemukan</p>;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-6 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-blue-700 mb-4">{course.title}</h1>
-      {course.thumbnail && (
-        <img
-          src={course.thumbnail}
-          alt={course.title}
-          className="w-full h-60 object-cover rounded-lg mb-6 border"
-        />
-      )}
-      {course.summary && <p className="text-gray-600 mb-4">{course.summary}</p>}
-
-      <div className="space-y-2 text-sm text-gray-700">
-        {course.price !== undefined && (
-          <p>
-            Price:{" "}
-            {course.price === 0 ? (
-              <span className="text-green-600 font-bold">FREE</span>
-            ) : (
-              <span className="text-red-500 font-semibold">
-                {course.price.toLocaleString()} {course.currency || "IDR"}
-              </span>
-            )}
-          </p>
+    <main className="bg-gray-50 min-h-screen py-12 px-6">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border">
+        {/* Thumbnail */}
+        {course.thumbnail && (
+          <div className="w-full h-72 relative">
+            <img
+              src={course.thumbnail}
+              alt={course.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
         )}
-        {course.duration && <p>Duration: {course.duration} min</p>}
-        {course.level && <p>Level: {course.level}</p>}
-        {course.relevance_score && <p>Relevance Score: {course.relevance_score}</p>}
+
+        <div className="p-8">
+          <h1 className="text-3xl font-bold text-[#375EEB] text-center mb-6">
+            {course.title}
+          </h1>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-gray-700 text-sm mb-6">
+            {course.duration && (
+              <div className="flex items-center gap-2 justify-center p-3 rounded-lg bg-gray-50 border">
+                <Clock className="w-4 h-4 text-[#28C9B8]" />
+                <span>{course.duration} min</span>
+              </div>
+            )}
+
+            {course.level && (
+              <div className="flex items-center gap-2 justify-center p-3 rounded-lg bg-gray-50 border">
+                <Layers className="w-4 h-4 text-[#28C9B8]" />
+                <span>{course.level}</span>
+              </div>
+            )}
+
+            {course.relevance_score && (
+              <div className="flex items-center gap-2 justify-center p-3 rounded-lg bg-gray-50 border">
+                <Star className="w-4 h-4 text-[#28C9B8]" />
+                <span>{course.relevance_score}/100</span>
+              </div>
+            )}
+          </div>
+
+          {course.summary && (
+            <p className="text-gray-600 leading-relaxed text-justify">
+              {course.summary}
+            </p>
+          )}
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
