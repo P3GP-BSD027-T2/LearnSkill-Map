@@ -6,7 +6,7 @@ import SignUpForm from "@/components/sign-up-form";
 export default function RegisterPage() {
   return (
     <>
-      <div className="flex min-h-screen flex-col justify-center items-center bg-sky-100 gap-4">
+      <div className="flex min-h-screen flex-col justify-center items-center bg-gradient-to-b from-[#eefeff] to-white gap-4">
         <Image src={"/logo-1.png"} alt="image-logo" width={100} height={100} />
 
         <p className="bg-amber-300 rounded-md px-2 py-1 text-sm font-semibold">

@@ -43,15 +43,14 @@ export default function CourseDetail() {
   if (!course) return <p className="text-center text-gray-500">Course tidak ditemukan</p>;
 
   return (
-    <main className="bg-gray-50 min-h-screen py-12 px-6">
+    <div className="bg-gray-50 min-h-screen py-12 px-6">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border">
-        {/* Thumbnail */}
         {course.thumbnail && (
-          <div className="w-full h-72 relative">
+          <div className="w-cover h-72 relative">
             <img
               src={course.thumbnail}
               alt={course.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
         )}
@@ -91,6 +90,6 @@ export default function CourseDetail() {
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
