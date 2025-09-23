@@ -32,7 +32,9 @@ export default async function AdminPage() {
           <StatisticCard title="Total Sales" value={totalSales} />
           <StatisticCard title="Total Revenue" value={rupiah(totalRevenue)} />
         </div>
-        <p className="mt-10 font-semibold text-xl">2025 Chart Statistic</p>
+        <p className="mt-10 font-semibold text-xl">
+          {new Date().getFullYear()} Chart Statistic
+        </p>
         <AdminChart data={statistics} />
       </div>
     </>

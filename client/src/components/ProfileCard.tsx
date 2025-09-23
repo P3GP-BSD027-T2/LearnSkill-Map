@@ -57,7 +57,9 @@ export default function ProfileCard({ data }: { data: Data }) {
             <span className="text-sm text-muted-foreground">My Course</span>
           </div>
           <div className="flex flex-col items-center">
-            <p className="text-blue-600 font-bold text-lg">2</p>
+            <p className="text-blue-600 font-bold text-lg">
+              {data.earned_achievements.length}
+            </p>
             <span className="text-sm text-muted-foreground">Achievements</span>
           </div>
         </div>

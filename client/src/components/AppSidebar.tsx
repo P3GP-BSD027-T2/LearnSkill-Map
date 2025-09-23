@@ -43,7 +43,7 @@ export function AppSidebar() {
                   className="flex items-center w-full rounded-lg px-4 py-2 text-left text-white hover:bg-white hover:text-indigo-950 hover:shadow-md transition"
                 >
                   <Link
-                    href="https://www.youtube.com"
+                    href={"/admin/admin-courses"}
                     className="flex items-center gap-2"
                   >
                     <BookOpenText />

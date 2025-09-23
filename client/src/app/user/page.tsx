@@ -58,8 +58,16 @@ export type Skill = {
   roadmap: Roadmap;
 };
 
+export type Achievement = {
+  _id: string;
+  title: string;
+  description: string;
+  created_at: string;
+};
+
 export type Data = {
   owned_courses: Course[];
+  earned_achievements: Achievement[];
   _id: string;
   name: string;
   email: string;
@@ -70,6 +78,7 @@ export default async function ProfilePage() {
   const headerList = await headers();
   const userId = headerList.get("x-user-id");
   const userData = await getUserById(userId);
+  // console.log(userData.earned_achievements[0].title);
   // console.log(userData.skills[0].roadmap.nodes[0].progress);
   return (
     <>
@@ -77,7 +86,7 @@ export default async function ProfilePage() {
         <div className="grid grid-cols-3 gap-4">
           <div className="flex flex-col col-span-1 gap-6">
             <ProfileCard data={userData} />
-            <Achievement />
+            <Achievement data={userData} />
           </div>
           <div className="col-span-2">
             <RoadmapProgress data={userData} />

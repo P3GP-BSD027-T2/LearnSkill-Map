@@ -1,7 +1,11 @@
 import { Award } from "lucide-react";
 import AchievementCard from "./AchievementCard";
+import { Data } from "@/app/user/page";
+import { formatDate } from "@/helpers/formatDate";
 
-export default function Achievement() {
+export default function Achievement({ data }: { data: Data }) {
+  const achievements = data.earned_achievements;
+  // console.log(achievements);
   return (
     <>
       <div className="p-6 flex flex-col items-center gap-8 rounded-2xl shadow-sm w-full border">
@@ -14,8 +18,16 @@ export default function Achievement() {
           </div>
         </div>
 
-        <div className="flex flex-col px-4 w-full">
-          <AchievementCard />
+        <div className="flex flex-col px-4 w-full gap-2">
+          {achievements.map((val, idx) => (
+            <AchievementCard
+              key={idx}
+              title={val.title}
+              description={val.description}
+              earnedDate={formatDate(val.created_at)}
+            />
+          ))}
+          {/* <AchievementCard /> */}
         </div>
       </div>
     </>
