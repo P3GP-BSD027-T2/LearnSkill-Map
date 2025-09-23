@@ -1,4 +1,4 @@
-// app/courses/page.tsx
+
 import { getUserById } from "@/server-action";
 import { headers } from "next/headers";
 import Link from "next/link";

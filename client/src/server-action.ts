@@ -67,6 +67,30 @@ export type Statistic = {
   paid: number;
 };
 
+export const getUserRoadmaps = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+    if (!token) return [];
+  
+  const userData = verifyToken(token) as { _id: string; role?: string };
+  const userId = userData._id;
+
+  try {
+    const { data } = await axios.get(
+      "https://n8n.self-host.my.id/webhook/lsm/skills/generated",
+      {
+        headers: {
+          "x-user-id": userId,
+        },
+      }
+    );
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error("Error fetching user roadmaps:", err);
+    return [];
+  }
+};
+
 export const register = async (input: RegisterInput) => {
   // console.log(fullName, email, password, confirmPassword);
 

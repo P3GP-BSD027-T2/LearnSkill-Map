@@ -9,15 +9,13 @@ export default async function MyRoadmapPage() {
   console.log(userId);
   return (
     <>
-      <div className="flex-1 grid min-h-screen grid-cols-3 gap-2 py-6 px-36">
+      <div className="flex  grid min-h-screen grid-cols-3 gap-2 py-6 px-36 gap-8">
         <div className="w-full">
           {data?.skills?.map(async (val, idx) => {
-            const totalNode = await getSkillBySlug(val.slug);
             return (
               <RoadmapCard
                 data={val}
                 key={idx}
-                nodeLength={totalNode.nodes.length}
               />
             );
           })}
