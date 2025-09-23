@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { Data } from "./app/user/page";
 import { verifyToken } from "./helpers/jwt";
 import { UserBasic, UserWithRole } from "./middleware";
+import { CourseInput } from "./components/AddCourseForm";
 
 export type RegisterInput = {
   fullName: string;
@@ -276,6 +277,32 @@ export const payNow = async (
   // console.log(data);
   redirect(`${data.redirect_url}`);
   return data;
+};
+
+export const addCourse = async (input: CourseInput) => {
+  try {
+    // console.log(input);
+    const { data } = await axios.post(
+      "https://n8n.self-host.my.id/webhook/lsm/admin/courses",
+      input
+    );
+    redirect("/admin/admin-courses");
+    return data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const deleteCourse = async (courseId: string) => {
+  try {
+    const { data } = await axios.delete(
+      `https://n8n.self-host.my.id/webhook/3dc5beea-65c0-4f39-84e4-e01a38d6d6b9/lsm/admin/courses/delete/${courseId}`
+    );
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const checkToken = async (): Promise<CheckTokenOutput> => {
