@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import {  TrendingUp, Clock, Award, BarChart, BookOpen } from "lucide-react";
+import { TrendingUp, Clock, Award, BarChart, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 interface NodeData {
@@ -46,7 +46,6 @@ interface NodeData {
     slug?: string;
     relevance_score?: number;
   }[];
-  status?: "review" | "continue" | "next" | "locked";
 }
 
 interface Skill {
@@ -56,7 +55,7 @@ interface Skill {
   doneSteps?: string[];
 }
 
-export default function AIDetail() {
+export default function SkillDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [skill, setSkill] = useState<Skill | null>(null);
   const [loading, setLoading] = useState(true);
@@ -73,13 +72,8 @@ export default function AIDetail() {
           `https://n8n.self-host.my.id/webhook/4c167dde-64b5-44b8-86b9-73c5b92f88fc/lsm/skills/${slug}`
         );
         setSkill(res.data);
-
-        let steps: string[] = res.data.doneSteps || [];
-        const savedSteps = localStorage.getItem(`doneSteps-${slug}`);
-        if (savedSteps) steps = JSON.parse(savedSteps);
-
-        setDoneSteps(steps);
-        if (steps.length > 0) setIsTaken(true);
+        setDoneSteps(res.data.doneSteps || []);
+        if ((res.data.doneSteps || []).length > 0) setIsTaken(true);
       } catch {
         setError("Gagal mengambil data");
       } finally {
@@ -93,8 +87,9 @@ export default function AIDetail() {
     const updatedSteps = doneSteps.includes(id)
       ? doneSteps.filter((s) => s !== id)
       : [...doneSteps, id];
+
     setDoneSteps(updatedSteps);
-    localStorage.setItem(`doneSteps-${slug}`, JSON.stringify(updatedSteps));
+
     try {
       await axios.post(
         `https://n8n.self-host.my.id/webhook/fe69fd3f-847a-4fe4-a1e2-d03ccdec3c9c/lsm/skills/${slug}`,
@@ -108,9 +103,9 @@ export default function AIDetail() {
   const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
     e.preventDefault();
     if (!isTaken) {
-    setShowTrackDialog(true); 
-    return;
-  }
+      setShowTrackDialog(true);
+      return;
+    }
     toggleDone(node._id);
   };
 
@@ -123,7 +118,7 @@ export default function AIDetail() {
         { doneSteps }
       );
     } catch (err) {
-      console.error("Gagal take roadmap:", err);
+      console.error("Failed:", err);
     }
   };
 
@@ -150,7 +145,6 @@ export default function AIDetail() {
         group.forEach((node, idx) => {
           const x = idx * xStep - ((totalBranches - 1) * xStep) / 2;
           const y = Number(key) * yStep;
-
           const isDone = doneSteps.includes(node._id);
 
           flowNodes.push({
@@ -162,8 +156,7 @@ export default function AIDetail() {
                   onContextMenu={(e) => handleRightClickNode(node, e)}
                   onClick={() => isTaken && setSelectedNode(node)}
                   style={{
-                    padding: "12x 12px",
-              
+                    padding: "12px",
                     backgroundColor: isDone ? "#d1fae5" : "#eff6ff",
                     textDecoration: isDone ? "line-through" : "none",
                     cursor: "pointer",
@@ -195,7 +188,9 @@ export default function AIDetail() {
     return { flowNodes, flowEdges };
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <p className="text-center py-20 text-gray-500">Loading roadmaps...</p>;
+  }
   if (error) return <p className="text-red-500">{error}</p>;
   if (!skill) return <p>Skill tidak ditemukan</p>;
 
@@ -207,28 +202,38 @@ export default function AIDetail() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6">
-      <h1 className="text-3xl font-bold text-center text-blue-700 mb-4">{skill.name} Roadmap</h1>
+      <h1 className="text-3xl font-bold text-center text-blue-700 mb-4">
+        {skill.name} Roadmap
+      </h1>
       <p className="text-gray-600 text-center mb-8">{skill.description}</p>
 
       <div className="max-w-3xl mx-auto mb-8 px-2">
         <div className="flex items-center gap-4 mb-2">
-          <span>Progress: {doneCount}/{totalNodes} steps</span>
+          <span>
+            Progress: {doneCount}/{totalNodes} steps
+          </span>
           <Progress value={progressPercent} className="h-3 flex-1" />
           <span>{Math.round(progressPercent)}%</span>
 
           {!isTaken ? (
-            <Button onClick={() => setShowTrackDialog(true)} className="bg-[#28C9B8] hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md flex items-center gap-2 transition">
+            <Button
+              onClick={() => setShowTrackDialog(true)}
+              className="bg-[#28C9B8] hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md flex items-center gap-2 transition"
+            >
               Take this Roadmap <TrendingUp className="w-4 h-4" />
             </Button>
           ) : (
-            <Button onClick={() => setShowTrackDialog(true)} className="bg-[#28C9B8] hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md flex items-center gap-2 transition">
-              How Track Your Progress
+            <Button
+              onClick={() => setShowTrackDialog(true)}
+              className="bg-[#28C9B8] hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md flex items-center gap-2 transition"
+            >
+              Track Your Progress
             </Button>
           )}
         </div>
       </div>
 
-      <div className="h-[1700px] w-full border rounded-lg bg-white mb-10">
+      <div className="h-[500px] w-full border rounded-lg bg-white mb-5">
         <ReactFlow nodes={flowNodes} edges={flowEdges} fitView>
           <Background />
           <Controls />
@@ -239,28 +244,45 @@ export default function AIDetail() {
           <DialogHeader>
             <DialogTitle>Take this roadmap?</DialogTitle>
           </DialogHeader>
-          <p>Are you sure you want to take this roadmap? Then you can track your progress.</p>
+          <p>
+            Are you sure you want to take this roadmap? Then you can track your
+            progress.
+          </p>
           <DialogFooter className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setShowTrackDialog(false)}>No</Button>
-            <Button onClick={takeRoadmap} className="bg-blue-600 text-white">Yes, Take Roadmap</Button>
+            <Button variant="outline" onClick={() => setShowTrackDialog(false)}>
+              No
+            </Button>
+            <Button onClick={takeRoadmap} className="bg-blue-600 text-white">
+              Yes, Take Roadmap
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
       <Dialog open={showTrackDialog && isTaken} onOpenChange={setShowTrackDialog}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
+          <DialogHeader className="text-blue-600">
             <DialogTitle>How to update your progress</DialogTitle>
           </DialogHeader>
           <div className="text-sm text-gray-600 space-y-2">
             <p>You can change the step status in two ways:</p>
             <ul className="list-disc list-inside space-y-1">
-              <li><b>Right click</b> on a step to toggle DONE.</li>
-              <li><b>Click a node</b> then select status in the dropdown (NEXT / DONE).</li>
+              <li>
+                <b>Right click</b> on a step to toggle DONE.
+              </li>
+              <li>
+                <b>Click a node</b> then select status in the dropdown (NEXT /
+                DONE).
+              </li>
             </ul>
           </div>
+
           <DialogFooter>
-            <Button onClick={() => setShowTrackDialog(false)}>Continue</Button>
+            <Button
+              onClick={() => setShowTrackDialog(false)}
+              className="bg-[#28C9B8]"
+            >
+              Continue
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

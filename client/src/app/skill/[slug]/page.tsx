@@ -65,7 +65,6 @@ export default function SkillDetail() {
   const [showTrackDialog, setShowTrackDialog] = useState(false);
   const [isTaken, setIsTaken] = useState(false);
 
-  // Fetch data skill
   useEffect(() => {
     async function fetchData() {
       try {
@@ -84,7 +83,6 @@ export default function SkillDetail() {
     if (slug) fetchData();
   }, [slug]);
 
-  // Toggle node selesai / belum
   const toggleDone = async (id: string) => {
     const updatedSteps = doneSteps.includes(id)
       ? doneSteps.filter((s) => s !== id)

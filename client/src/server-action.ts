@@ -4,7 +4,7 @@ import z from "zod";
 import { RegisterSchema } from "./app/account/validation/register-validation";
 import axios, { AxiosError } from "axios";
 import { LoginSchema } from "./app/account/validation/login-validation";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Data } from "./app/user/page";
 import { verifyToken } from "./helpers/jwt";
@@ -67,29 +67,72 @@ export type Statistic = {
   paid: number;
 };
 
-export const getUserRoadmaps = async () => {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-    if (!token) return [];
-  
-  const userData = verifyToken(token) as { _id: string; role?: string };
-  const userId = userData._id;
-
+export const generateRoadmap = async (skill_title: string) => {
   try {
-    const { data } = await axios.get(
-      "https://n8n.self-host.my.id/webhook/lsm/skills/generated",
+    const cookieStore = cookies();
+    const token = (await cookieStore).get("token")?.value;
+    if (!token) throw new Error("User not authenticated");
+
+    const userData = verifyToken(token) as { _id: string };
+    const userId = userData._id;
+
+    const res = await axios.post(
+      "https://n8n.self-host.my.id/webhook/lsm/generate-roadmap",
+      new URLSearchParams({ skill_title }),
       {
         headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
           "x-user-id": userId,
         },
       }
     );
-    return Array.isArray(data) ? data : [];
+     if (res.status !== 200) {
+    throw new Error(`Server error: ${res.status}`);
+  }
+
+    //return res.data;
+  redirect(`/AI/${res.data.slug}`);
+  } catch (err: any) {
+    console.error("Error generating roadmap:", err.message);
+    throw err;
+  }
+};
+export const getUserRoadmaps = async () => {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (!token) {
+      console.log(" Token tidak ditemukan");
+      return [];
+    }
+
+    const userData = verifyToken(token) as { _id: string; role?: string };
+    const userId = userData._id;
+
+    const { data } = await axios.get(
+      "https://n8n.self-host.my.id/webhook/lsm/skills/generated",
+      { headers: { "x-user-id": userId } }
+    );
+
+    // console.log("dataaaaaa:", userId);
+
+    let roadmapData: any[] = [];
+    if (Array.isArray(data)) {
+      roadmapData = data;
+    } else if (data && Array.isArray(data.roadmap)) {
+      roadmapData = data.roadmap;
+    } else {
+      console.warn(" Data roadmap tidak ditemukan atau format tidak sesuai");
+    }
+
+    return roadmapData;
   } catch (err) {
-    console.error("Error fetching user roadmaps:", err);
+    console.error(" Error fetching user roadmaps:", err);
     return [];
   }
 };
+
+
 
 export const register = async (input: RegisterInput) => {
   // console.log(fullName, email, password, confirmPassword);
@@ -123,7 +166,6 @@ export const register = async (input: RegisterInput) => {
       // Error biasa
       throw err;
     } else {
-      // Fallback (jarang kejadian)
       throw new Error("Unexpected error occurred.");
     }
   }
@@ -217,3 +259,29 @@ export const getStatistic = async (): Promise<Statistic[]> => {
   );
   return data;
 };
+
+export async function saveProgress(slug: string, doneSteps: string[]) {
+  try {
+    const cookieStore = cookies();
+    const token = (await cookieStore).get("token")?.value;
+    if (!token) throw new Error("Unauthorized");
+
+    const { _id } = verifyToken(token) as { _id: string };
+
+    const { data } = await axios.post(
+      `https://n8n.self-host.my.id/webhook/fe69fd3f-847a-4fe4-a1e2-d03ccdec3c9c/lsm/skills/${slug}`,
+      { doneSteps },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": _id, // dinamis
+        },
+      }
+    );
+
+    return data;
+  } catch (err: any) {
+    console.error("Error saving progress:", err.message);
+    throw new Error("Failed to save progress");
+  }
+}
