@@ -286,11 +286,25 @@ export const addCourse = async (input: CourseInput) => {
       "https://n8n.self-host.my.id/webhook/lsm/admin/courses",
       input
     );
-    redirect("/admin/admin-courses");
+    // redirect("/admin/admin-courses");
     return data;
   } catch (err) {
     console.error(err);
     throw err;
+  }
+};
+
+export const updateCourse = async (input: CourseInput, courseId: string) => {
+  try {
+    const { data } = await axios.put(
+      `https://n8n.self-host.my.id/webhook/3dc5beea-65c0-4f39-84e4-e01a38d6d6b9/lsm/admin/courses/${courseId}`,
+      input
+    );
+    // console.log(input);
+    // redirect("/admin/admin-courses");
+    return data;
+  } catch (err) {
+    console.error(err);
   }
 };
 

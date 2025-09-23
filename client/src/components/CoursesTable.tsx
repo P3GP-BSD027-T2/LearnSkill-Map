@@ -14,9 +14,11 @@ import { Pencil, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { rupiah } from "@/helpers/rupiahFormat";
+import { useRouter } from "next/navigation";
 
 export default function AdminCoursesTable({ courses }: { courses: Course[] }) {
   const [courseList, setCourseList] = useState(courses);
+  const router = useRouter();
 
   const handleDelete = async (id: string) => {
     try {
@@ -68,7 +70,12 @@ export default function AdminCoursesTable({ courses }: { courses: Course[] }) {
                 >
                   <Trash />
                 </Button>
-                <Button className="bg-white text-black hover:text-white hover:bg-yellow-300">
+                <Button
+                  className="bg-white text-black hover:text-white hover:bg-yellow-300"
+                  onClick={() => {
+                    router.replace(`/admin/admin-courses/update/${val.slug}`);
+                  }}
+                >
                   <Pencil />
                 </Button>
               </TableCell>

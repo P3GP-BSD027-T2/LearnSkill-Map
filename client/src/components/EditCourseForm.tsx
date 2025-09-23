@@ -30,7 +30,7 @@ import {
   Image,
   QuickToolbar,
 } from "@syncfusion/ej2-react-richtexteditor";
-import { addCourse } from "@/server-action";
+import { Course, updateCourse } from "@/server-action";
 import { useRouter } from "next/navigation";
 
 export type CourseInput = {
@@ -47,28 +47,29 @@ export type CourseInput = {
   status: string;
 };
 
-export default function AddCourseForm() {
-  const router = useRouter();
+export default function AddCourseForm({ course }: { course: Course }) {
+  // console.log(course);
+  const route = useRouter();
   const rteRef = useRef<RichTextEditorComponent>(null);
   const [input, setInput] = useState<CourseInput>({
-    title: "",
-    slug: "",
-    summary: "",
-    thumbnail: "",
-    price: 0,
-    currency: "IDR",
-    duration: 0,
-    level: "",
-    tags: [],
-    content: "",
+    title: course.title,
+    slug: course.slug,
+    summary: course.summary,
+    thumbnail: course.thumbnail,
+    price: course.price,
+    currency: course.currency,
+    duration: course.duration,
+    level: course.level,
+    tags: course.tags,
+    content: course.content,
     status: "published",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // console.log(input);
-    await addCourse(input);
-    router.replace("/admin/admin-courses");
+    await updateCourse(input, course._id);
+    route.replace("/admin/admin-courses");
     // Di sini bisa panggil API untuk submit course
     // console.log(data);
   };
@@ -222,7 +223,7 @@ export default function AddCourseForm() {
         type="submit"
         className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
       >
-        Add Course
+        Edit Course
       </Button>
     </form>
   );
