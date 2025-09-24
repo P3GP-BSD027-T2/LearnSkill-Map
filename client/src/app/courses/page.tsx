@@ -10,8 +10,10 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Clock } from "lucide-react";
-import Loading from "@/components/ui/loading"; // komponen loading
+import { Clock, Tag } from "lucide-react"; // ⏰ jam & 💲 harga
+import { checkToken, getUserById } from "@/server-action";
+import { useRouter } from "next/navigation";
+import Loading from "@/components/ui/loading";
 
 type Course = {
   _id: string;
@@ -46,10 +48,35 @@ async function getCourses(): Promise<Course[]> {
 }
 
 export default function CoursesPage() {
+  const router = useRouter();
   const [courses, setCourses] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+
+  const buttonPressHandler = async (course: Course) => {
+    // apakah berbayar
+    if (course.price === 0) {
+      setSelectedCourse(course);
+    } else {
+      const res = await checkToken();
+      const data = await getUserById(res.userId);
+      // console.log(data);
+      const ownedCourseId: string[] = [];
+      data?.owned_courses?.forEach((val) => {
+        ownedCourseId.push(val._id);
+      });
+      if (!res.hasToken) {
+        router.replace("/account"); // belum login harus login dan bayar
+      } else {
+        if (ownedCourseId.includes(course._id)) {
+          setSelectedCourse(course); // bisa akses
+        } else {
+          router.replace(`/payment/${course.slug}`); // harus beli
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -86,6 +113,14 @@ export default function CoursesPage() {
                 key={course._id}
                 className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition border flex flex-col overflow-hidden"
               >
+                <div className="mt-2 flex items-center justify-end gap-1 text-sm font-medium text-gray-700">
+                  <Tag className="w-4 h-4 text-[#375EEB]" />
+                  {course.price === 0
+                    ? "Free"
+                    : `${course.currency} ${course.price.toLocaleString(
+                        "id-ID"
+                      )}`}
+                </div>
                 <div className="relative h-40 w-full">
                   <img
                     src={course.thumbnail}
@@ -134,9 +169,13 @@ export default function CoursesPage() {
                     </span>
                   </div>
 
+            
+
                   <Button
-                    className="mt-5 w-full bg-[#375EEB] hover:bg-[#2746b8] transition"
-                    onClick={() => setSelectedCourse(course)}
+                    className="mt-5 w-full bg-[#375EEB]"
+                    onClick={() => {
+                      buttonPressHandler(course);
+                    }}
                   >
                     See Details
                   </Button>

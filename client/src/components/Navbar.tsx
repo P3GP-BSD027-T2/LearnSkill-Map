@@ -6,6 +6,8 @@ import Logo from "@/assets/logo.png";
 import Link from "next/link";
 import { useState } from "react";
 import { logoutHandler } from "@/server-action";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar({
   userToken,
@@ -16,7 +18,11 @@ export default function Navbar({
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const router = useRouter();
+  useEffect(() => {
+    router.refresh();
+  }, [router]);
+  if (role) return null;
   return (
     <nav className="w-full sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
