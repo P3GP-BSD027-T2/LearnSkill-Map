@@ -8,7 +8,7 @@ import Loading from "@/components/ui/loading";
 
 export default function Page() {
   const [project, setProject] = useState("");
-const [roadmapData, setRoadmapData] = useState<any>(null);
+  const [roadmapData, setRoadmapData] = useState<any>(null);
   const [roadmap, setRoadmap] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,20 +19,18 @@ const [roadmapData, setRoadmapData] = useState<any>(null);
     setLoading(true);
     setError(null);
 
-try {
-  const data = await generateRoadmap(project);
-  setRoadmapData(data);
-  // console.log("roadmap result:", data);
+    try {
+      const data = await generateRoadmap(project);
+      setRoadmapData(data);
+      // console.log("roadmap result:", data);
 
-  // router.push();
- 
-} catch (err: any) {
-  setError(err.message || "Terjadi kesalahan");
-} finally {
-  setLoading(false);
-}
-  }
-
+      // router.push();
+    } catch (err: any) {
+      setError(err.message || "Terjadi kesalahan");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-[#F9FBFF] px-4 pt-10">
@@ -41,8 +39,7 @@ try {
           <Sparkles className="w-4 h-4" />
           AI Roadmap Generator
         </span>
-        
-        
+
         <h1 className="text-4xl font-bold text-[#375EEB] mb-5 mt-5">
           Generate Your Custom Roadmap
         </h1>
@@ -71,8 +68,14 @@ try {
           disabled={loading}
           className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition disabled:bg-gray-300"
         >
-          <Sparkles className="w-4 h-4" />
-          if (loading) return <Loading/>;
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Sparkles className="w-4 h-4" />
+              Generate Roadmap
+            </>
+          )}
         </button>
       </form>
 
@@ -81,9 +84,7 @@ try {
           {error}
         </p>
       )}
-      {roadmapData && (
-        <pre>{JSON.stringify(roadmapData, null, 2)}</pre>
-      )}
+      {roadmapData && <pre>{JSON.stringify(roadmapData, null, 2)}</pre>}
 
       {roadmap && Array.isArray(roadmap) && (
         <div className="mt-8 w-full max-w-xl space-y-3">

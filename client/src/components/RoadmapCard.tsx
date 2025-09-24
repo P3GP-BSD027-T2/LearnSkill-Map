@@ -25,8 +25,9 @@ export default function RoadmapCard({ data }: { data: Skill }) {
   data.roadmap.nodes.forEach((val) => {
     if (val.progress.completed_at !== null) completedNode++;
   });
-   console.log(completedNode);
-  const skillProgress = Math.ceil(((completedNode/2) / totalNode) * 100);
+  // console.log(completedNode);
+
+  const skillProgress = Math.ceil((completedNode / 2 / totalNode) * 100);
   return (
     <>
       <Card className="p-4 rounded-xl shadow-sm transition-all duration-200">
@@ -60,11 +61,11 @@ export default function RoadmapCard({ data }: { data: Skill }) {
                 </>
               )}
             </p>
-            {/* <Link href={`/skill/${data.slug}`}>
+            <Link href={`/skill/${data.slug}`}>
               <button className="px-4 py-2 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 transition hover:cursor-pointer">
                 View Tracker
               </button>
-            </Link> */}
+            </Link>
           </div>
         </div>
       </Card>

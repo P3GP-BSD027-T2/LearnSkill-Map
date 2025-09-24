@@ -27,6 +27,7 @@ import { Progress } from "@/components/ui/progress";
 import { TrendingUp, Clock, Award, BarChart, BookOpen } from "lucide-react";
 import Link from "next/link";
 import Loading from "@/components/ui/loading";
+import { takeRoadmapAction } from "@/server-action";
 
 interface NodeData {
   _id: string;
@@ -125,16 +126,15 @@ export default function SkillDetail() {
     }
   };
 
-const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
-  e.preventDefault();
-  if (!isTaken) {
-    setShowTrackDialog(true);
-    return; 
-  }
+  const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!isTaken) {
+      setShowTrackDialog(true);
+      return;
+    }
 
-  toggleDone(node._id);
-};
-
+    toggleDone(node._id);
+  };
 
   const prepareFlow = (nodes: NodeData[]) => {
     const flowNodes: Node[] = [];
@@ -202,7 +202,7 @@ const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
     return { flowNodes, flowEdges };
   };
 
- if (loading) return <Loading/>;
+  if (loading) return <Loading />;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!skill) return <p>Skill tidak ditemukan</p>;
 
@@ -234,13 +234,8 @@ const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
             <TrendingUp className="w-4 h-4" />
           </Button>
         </div>
-        <div className="flex items-center gap-2 mb-4">
- 
-
-</div>
-
+        <div className="flex items-center gap-2 mb-4"></div>
       </div>
-      
 
       <div className="h-[500px] w-full border rounded-lg bg-white mb-5">
         <ReactFlow nodes={flowNodes} edges={flowEdges} fitView>
@@ -248,14 +243,18 @@ const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
           <Controls />
         </ReactFlow>
       </div>
-      
-      <Dialog open={showTrackDialog && !isTaken} onOpenChange={setShowTrackDialog}>
+
+      <Dialog
+        open={showTrackDialog && !isTaken}
+        onOpenChange={setShowTrackDialog}
+      >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Take this roadmap?</DialogTitle>
           </DialogHeader>
           <p>
-            Are you sure you want to take this roadmap? Then you can track your progress.
+            Are you sure you want to take this roadmap? Then you can track your
+            progress.
           </p>
           <DialogFooter className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setShowTrackDialog(false)}>
@@ -263,10 +262,12 @@ const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
             </Button>
             <Button
               onClick={() => {
+                takeRoadmapAction(slug, doneSteps);
                 setIsTaken(true);
                 setShowTrackDialog(false);
                 const saved = localStorage.getItem("roadmap-taken");
                 const taken = saved ? JSON.parse(saved) : [];
+
                 if (!taken.includes(slug)) {
                   taken.push(slug);
                   localStorage.setItem("roadmap-taken", JSON.stringify(taken));
@@ -279,7 +280,10 @@ const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Dialog open={showTrackDialog && isTaken} onOpenChange={setShowTrackDialog}>
+      <Dialog
+        open={showTrackDialog && isTaken}
+        onOpenChange={setShowTrackDialog}
+      >
         <DialogContent className="sm:max-w-md">
           <DialogHeader className="text-blue-600">
             <DialogTitle>How to update your progress</DialogTitle>
@@ -291,7 +295,8 @@ const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
                 <b>Right click</b> on a step to toggle DONE.
               </li>
               <li>
-                <b>Click a node</b> then select status in the dropdown (NEXT / DONE).
+                <b>Click a node</b> then select status in the dropdown (NEXT /
+                DONE).
               </li>
             </ul>
           </div>
@@ -327,7 +332,9 @@ const handleRightClickNode = (node: NodeData, e: React.MouseEvent) => {
 
             <div className="mt-6 space-y-5">
               <div className="pl-2">
-                <label className="font-semibold text-gray-700 mr-2">Status:</label>
+                <label className="font-semibold text-gray-700 mr-2">
+                  Status:
+                </label>
                 <select
                   value={doneSteps.includes(selectedNode._id) ? "done" : "next"}
                   onChange={(e) => {
