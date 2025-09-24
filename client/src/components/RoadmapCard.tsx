@@ -7,6 +7,7 @@ import { Card } from "./ui/card";
 
 import { Skill } from "@/app/user/page";
 import { Progress } from "./ui/progress";
+import Link from "next/link";
 
 export default function RoadmapCard({ data }: { data: Skill }) {
   // console.log(data);
