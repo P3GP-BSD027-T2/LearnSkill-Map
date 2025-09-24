@@ -16,7 +16,7 @@ export default function RoadmapCatalog() {
     const fetchRoadmaps = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/skills`
+          `http://localhost:3000/api/skills`
         );
         if (Array.isArray(res.data)) {
           setRoadmaps(res.data);
