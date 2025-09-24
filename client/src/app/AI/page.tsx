@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { getUserRoadmaps } from "@/server-action"; 
+import Loading from "@/components/ui/loading";
 
 export default function RoadmapCatalog() {
   const [roadmaps, setRoadmaps] = useState<any[]>([]);
@@ -40,10 +41,8 @@ export default function RoadmapCatalog() {
       return matchesSearch && matchesFilter;
     });
 
-  if (loading) {
-    return <p className="text-center py-20 text-gray-500">Loading ...</p>;
-  }
-
+  
+   if (loading) return <Loading/>;
   return (
     <main className="bg-gradient-to-b from-[#F9FBFF] to-white min-h-screen py-16 px-6">
       <div className="max-w-4xl mx-auto text-center mb-12">
@@ -55,7 +54,6 @@ export default function RoadmapCatalog() {
           and step by step.
         </p>
       </div>
-
       <div className="max-w-4xl mx-auto mb-10">
         <div className="bg-white shadow-sm rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4">
           <input
@@ -110,7 +108,6 @@ export default function RoadmapCatalog() {
             ))}
           </div>
         )}
-
         <div className="max-w-6xl mx-auto mt-14 flex justify-center">
           <Link href={`/request-roadmap`}>
             <button className="px-6 py-3 bg-[#28C9B8] text-white rounded-xl text-sm font-medium hover:bg-[#20a89b] transition flex items-center gap-2 shadow-md">

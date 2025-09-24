@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles } from "lucide-react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { Sparkles } from "lucide-react";
+import { generateRoadmap } from "@/server-action";
+import Loading from "@/components/ui/loading";
 
 export default function Page() {
   const [project, setProject] = useState("");
-  const [loading, setLoading] = useState(false);
+const [roadmapData, setRoadmapData] = useState<any>(null);
   const [roadmap, setRoadmap] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -17,27 +19,20 @@ export default function Page() {
     setLoading(true);
     setError(null);
 
-    try {
-      const res = await axios.post(
-        "https://n8n.self-host.my.id/webhook/lsm/generate-roadmap",
-        new URLSearchParams({ skill_title: project }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "x-user-id": "68cbcf449bd39765290f0998",
-          },
-        }
-      );
-      
+try {
+  const data = await generateRoadmap(project);
+  setRoadmapData(data);
+  // console.log("roadmap result:", data);
 
-      setRoadmap(res.data);
-      router.push(`/AI/${res.data.slug}`); 
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || "Terjadi kesalahan");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // router.push();
+ 
+} catch (err: any) {
+  setError(err.message || "Terjadi kesalahan");
+} finally {
+  setLoading(false);
+}
+  }
+
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-[#F9FBFF] px-4 pt-10">
@@ -46,6 +41,8 @@ export default function Page() {
           <Sparkles className="w-4 h-4" />
           AI Roadmap Generator
         </span>
+        
+        
         <h1 className="text-4xl font-bold text-[#375EEB] mb-5 mt-5">
           Generate Your Custom Roadmap
         </h1>
@@ -75,7 +72,7 @@ export default function Page() {
           className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition disabled:bg-gray-300"
         >
           <Sparkles className="w-4 h-4" />
-          {loading ? "Generating..." : "Generate Roadmap"}
+          if (loading) return <Loading/>;
         </button>
       </form>
 
@@ -83,6 +80,9 @@ export default function Page() {
         <p className="mt-4 text-red-500 font-medium max-w-xl text-center">
           {error}
         </p>
+      )}
+      {roadmapData && (
+        <pre>{JSON.stringify(roadmapData, null, 2)}</pre>
       )}
 
       {roadmap && Array.isArray(roadmap) && (

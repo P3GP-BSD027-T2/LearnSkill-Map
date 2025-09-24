@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
+import Loading from "@/components/ui/loading";
 
 export default function RoadmapCatalog() {
   const [roadmaps, setRoadmaps] = useState<any[]>([]);
@@ -42,9 +43,8 @@ export default function RoadmapCatalog() {
       return matchesSearch && matchesFilter;
     });
 
-  if (loading) {
-    return <p className="text-center py-20 text-gray-500">Loading ...</p>;
-  }
+
+ if (loading) return <Loading/>;
 
   return (
     <main className="bg-gray-50 min-h-screen py-12 px-6">

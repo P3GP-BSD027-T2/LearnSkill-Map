@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Clock, Layers, Star } from "lucide-react";
+import Loading from "@/components/ui/loading";
 
 interface Course {
   _id: string;
@@ -38,7 +39,7 @@ export default function CourseDetail() {
     if (slug) fetchData();
   }, [slug]);
 
-  if (loading) return <p className="text-center py-20">Loading course...</p>;
+ if (loading) return <Loading/>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!course) return <p className="text-center text-gray-500">Course tidak ditemukan</p>;
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { CheckCircle2, Circle } from "lucide-react";
 import { Card } from "./ui/card";
 import Link from "next/link";
@@ -9,14 +11,22 @@ import { Progress } from "./ui/progress";
 export default function RoadmapCard({ data }: { data: Skill }) {
   // console.log(data);
   // const skillBySlug = await getSkillBySlug(val.slug);
+  const [isTaken, setIsTaken] = useState(false);
+  useEffect(() => {
+    const taken = localStorage.getItem(`taken-${data.slug}`);
+    if (taken === "true") setIsTaken(true);
+  }, [data.slug]);
   const totalNode = data.roadmap.nodes.length;
-  let completedNode: number = 0;
+  //let completedNode: number = 0;
+  let completedNode = data.roadmap.nodes.filter(
+    (val) => val.progress?.completed_at
+  ).length;
 
   data.roadmap.nodes.forEach((val) => {
     if (val.progress.completed_at !== null) completedNode++;
   });
-  // console.log(totalNode);
-  const skillProgress = Math.ceil((completedNode / totalNode) * 100);
+   console.log(completedNode);
+  const skillProgress = Math.ceil(((completedNode/2) / totalNode) * 100);
   return (
     <>
       <Card className="p-4 rounded-xl shadow-sm transition-all duration-200">
@@ -50,11 +60,11 @@ export default function RoadmapCard({ data }: { data: Skill }) {
                 </>
               )}
             </p>
-            <Link href={`/skill/${data.slug}`}>
+            {/* <Link href={`/skill/${data.slug}`}>
               <button className="px-4 py-2 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 transition hover:cursor-pointer">
                 View Tracker
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </Card>

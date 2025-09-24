@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "dagre": "^0.8.5",
     "dagrejs": "^0.2.1",
+    "framer-motion": "^12.23.19",
     "gsap": "^3.13.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
