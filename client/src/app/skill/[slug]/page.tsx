@@ -24,8 +24,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { TrendingUp, Clock, Award, BarChart, BookOpen } from "lucide-react";
-import Link from "next/link";
+import { TrendingUp } from "lucide-react";
 import Loading from "@/components/ui/loading";
 import { takeRoadmapAction } from "@/server-action";
 

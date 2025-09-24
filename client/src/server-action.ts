@@ -4,7 +4,7 @@ import z from "zod";
 import { RegisterSchema } from "./app/account/validation/register-validation";
 import axios, { AxiosError } from "axios";
 import { LoginSchema } from "./app/account/validation/login-validation";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Data } from "./app/user/page";
 import { verifyToken } from "./helpers/jwt";
@@ -403,10 +403,7 @@ export async function takeRoadmapAction(slug: string, doneSteps?: string[]) {
     return { success: false, error: err.message };
   }
 }
-export async function updateRoadmapProgress(
-  nodeId: string,
-  updatedSteps: string[]
-) {
+export async function updateRoadmapProgress(nodeId: string) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;

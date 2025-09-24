@@ -9,7 +9,7 @@ import Loading from "@/components/ui/loading";
 interface Course {
   _id: string;
   title: string;
-  summary?: string,
+  summary?: string;
   currency?: string;
   thumbnail?: string;
   duration?: number;
@@ -31,7 +31,9 @@ export default function CourseDetail() {
         );
         setCourse(res.data);
       } catch (err) {
-        setError("Gagal mengambil data course");
+        if (err) {
+          setError("Gagal mengambil data course");
+        }
       } finally {
         setLoading(false);
       }
@@ -39,9 +41,10 @@ export default function CourseDetail() {
     if (slug) fetchData();
   }, [slug]);
 
- if (loading) return <Loading/>;
+  if (loading) return <Loading />;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (!course) return <p className="text-center text-gray-500">Course tidak ditemukan</p>;
+  if (!course)
+    return <p className="text-center text-gray-500">Course tidak ditemukan</p>;
 
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-6">

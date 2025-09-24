@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { generateRoadmap } from "@/server-action";
 import Loading from "@/components/ui/loading";
@@ -12,7 +11,6 @@ export default function Page() {
   const [roadmap, setRoadmap] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

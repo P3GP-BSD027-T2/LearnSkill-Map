@@ -25,9 +25,11 @@ export default async function RootLayout({
 
   if (token) {
     const userData = verifyToken(token) as UserBasic | UserWithRole;
+    // console.log("userData:", userData);
     if ("role" in userData) {
-      if (userData.role === "admin") {
-        role = userData.role;
+      // console.log("role found:", userData.role);
+      if (userData.role.toLowerCase() === "admin") {
+        role = "admin";
       }
     }
   }
@@ -57,7 +59,9 @@ export default async function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>
-        {token ? <Navbar userToken={token} /> : <Navbar />}
+        {role !== "admin" &&
+          (token ? <Navbar userToken={token} /> : <Navbar />)}
+
         <main>{children}</main>
         <Toaster richColors position="top-center" />
       </body>

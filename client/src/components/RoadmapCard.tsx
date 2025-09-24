@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 import { CheckCircle2, Circle } from "lucide-react";
 import { Card } from "./ui/card";
@@ -12,11 +12,11 @@ import Link from "next/link";
 export default function RoadmapCard({ data }: { data: Skill }) {
   // console.log(data);
   // const skillBySlug = await getSkillBySlug(val.slug);
-  const [isTaken, setIsTaken] = useState(false);
-  useEffect(() => {
-    const taken = localStorage.getItem(`taken-${data.slug}`);
-    if (taken === "true") setIsTaken(true);
-  }, [data.slug]);
+  // const [isTaken, setIsTaken] = useState(false);
+  // useEffect(() => {
+  //   const taken = localStorage.getItem(`taken-${data.slug}`);
+  //   if (taken === "true") setIsTaken(true);
+  // }, [data.slug]);
   const totalNode = data.roadmap.nodes.length;
   //let completedNode: number = 0;
   let completedNode = data.roadmap.nodes.filter(
