@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { generateRoadmap } from "@/server-action";
+import Loading from "@/components/ui/loading";
 
 export default function Page() {
   const [project, setProject] = useState("");
@@ -71,7 +72,7 @@ try {
           className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition disabled:bg-gray-300"
         >
           <Sparkles className="w-4 h-4" />
-          {loading ? "Generating..." : "Generate Roadmap"}
+          if (loading) return <Loading/>;
         </button>
       </form>
 

@@ -1,4 +1,3 @@
-// app/courses/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -11,7 +10,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Clock, Tag } from "lucide-react"; // ⏰ jam & 💲 harga
+import { Clock } from "lucide-react";
+import Loading from "@/components/ui/loading"; // komponen loading
 
 type Course = {
   _id: string;
@@ -48,12 +48,15 @@ async function getCourses(): Promise<Course[]> {
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     getCourses()
       .then((data) => setCourses(data))
-      .catch((err) => setError(err.message));
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
   if (error) {
@@ -72,23 +75,17 @@ export default function CoursesPage() {
           Explore Courses
         </h1>
 
-        {courses.length === 0 ? (
+        {loading ? (
+          <Loading />
+        ) : courses.length === 0 ? (
           <p className="text-gray-600 text-center">No courses available.</p>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {courses.map((course) => (
               <div
                 key={course._id}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-md transition border flex flex-col overflow-hidden"
+                className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition border flex flex-col overflow-hidden"
               >
-                    <div className="mt-2 flex items-center justify-end gap-1 text-sm font-medium text-gray-700">
-                    <Tag className="w-4 h-4 text-[#375EEB]" />
-                    {course.price === 0
-                      ? "Free"
-                      : `${course.currency} ${course.price.toLocaleString(
-                          "id-ID"
-                        )}`}
-                  </div>
                 <div className="relative h-40 w-full">
                   <img
                     src={course.thumbnail}
@@ -97,7 +94,6 @@ export default function CoursesPage() {
                   />
                 </div>
 
-             
                 <div className="p-5 flex-1 flex flex-col">
                   <h2 className="font-semibold text-lg text-gray-800 mb-2 line-clamp-2">
                     {course.title}
@@ -106,22 +102,40 @@ export default function CoursesPage() {
                     {course.summary}
                   </p>
 
+                  <div className="mt-4">
+                    {course.price === 0 ? (
+                      <span className="text-2xl font-extrabold text-green-600">
+                        Free
+                      </span>
+                    ) : (
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-sm text-gray-400 line-through">
+                          {course.currency}{" "}
+                          {(course.price * 1.5).toLocaleString("id-ID")}
+                        </span>
+                        <span className="text-2xl font-extrabold text-[#375EEB]">
+                          {course.currency}{" "}
+                          {course.price.toLocaleString("id-ID")}
+                        </span>
+                        <span className="ml-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          SALE
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="mt-4 flex justify-between items-center text-xs">
-                 
                     <span className="px-2 py-1 rounded bg-indigo-50 text-indigo-600">
                       {course.level}
                     </span>
-
                     <span className="flex items-center gap-1 text-gray-500">
                       <Clock className="w-4 h-4 text-[#28C9B8]" />
                       {course.duration} min
                     </span>
                   </div>
 
-            
-
                   <Button
-                    className="mt-5 w-full bg-[#375EEB]"
+                    className="mt-5 w-full bg-[#375EEB] hover:bg-[#2746b8] transition"
                     onClick={() => setSelectedCourse(course)}
                   >
                     See Details
@@ -133,7 +147,7 @@ export default function CoursesPage() {
         )}
       </div>
 
-      {/* Modal */}
+      {/* Dialog */}
       <Dialog
         open={!!selectedCourse}
         onOpenChange={() => setSelectedCourse(null)}

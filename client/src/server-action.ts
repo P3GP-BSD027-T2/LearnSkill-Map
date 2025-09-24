@@ -259,29 +259,121 @@ export const getStatistic = async (): Promise<Statistic[]> => {
   );
   return data;
 };
-
-export async function saveProgress(slug: string, doneSteps: string[]) {
+export async function takeRoadmapAction(slug: string, doneSteps: string[]) {
   try {
-    const cookieStore = cookies();
-    const token = (await cookieStore).get("token")?.value;
-    if (!token) throw new Error("Unauthorized");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (!token) throw new Error("User not authenticated");
 
-    const { _id } = verifyToken(token) as { _id: string };
+    const userData = verifyToken(token) as { _id: string };
+    const userId = userData._id;
 
-    const { data } = await axios.post(
+    await axios.post(
       `https://n8n.self-host.my.id/webhook/fe69fd3f-847a-4fe4-a1e2-d03ccdec3c9c/lsm/skills/${slug}`,
       { doneSteps },
+      { headers: { "x-user-id": userId } }
+    );
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error in takeRoadmapAction:", err.message);
+    return { success: false, error: err.message };
+  }
+}
+export async function updateRoadmapProgress(nodeId: string, updatedSteps: string[]) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (!token) throw new Error("User not authenticated");
+
+    const userData = verifyToken(token) as { _id: string };
+    const userId = userData._id;
+
+    const res = await axios.post(
+      "https://n8n.self-host.my.id/webhook/lsm/progress/complete",
+      { node_id: nodeId },
       {
         headers: {
           "Content-Type": "application/json",
-          "x-user-id": _id, // dinamis
+          "x-user-id": userId,
+        },
+      }
+    );
+    console.log("hasilll",res);
+    
+
+    return { success: true, data: res.data || { node_id: nodeId } };
+  } catch (err: any) {
+    console.error("Error updating roadmap progress:", err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+
+
+
+export async function toggleRoadmapStep(stepId: string, doneSteps: string[]) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
+    if (!token) throw new Error('User not authenticated');
+
+    const userData = verifyToken(token) as { _id: string };
+    const userId = userData._id;
+
+    const updatedSteps = doneSteps.includes(stepId)
+      ? doneSteps.filter(s => s !== stepId)
+      : [...doneSteps, stepId];
+
+    const res = await axios.post(
+      `https://n8n.self-host.my.id/webhook/lsm/progress/complete`,
+      { doneSteps: updatedSteps },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': userId,
         },
       }
     );
 
-    return data;
+    if (!res.data.success) throw new Error(res.data.message || 'Failed to update step');
+
+    console.log('Updated steps:', updatedSteps);
+
+    return { success: true, doneSteps: updatedSteps };
   } catch (err: any) {
-    console.error("Error saving progress:", err.message);
-    throw new Error("Failed to save progress");
+    console.error('Error updating roadmap progress:', err.message);
+    return { success: false, error: err.message };
   }
 }
+
+export async function completeNodeProgress(nodeId: string) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (!token) throw new Error("User not authenticated");
+
+    const userData = verifyToken(token) as { _id: string };
+    const userId = userData._id;
+
+    const res = await axios.post(
+      "https://n8n.self-host.my.id/webhook/lsm/progress/complete",
+      { node_id: nodeId },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId,
+        },
+      }
+    );
+
+    if (res.status !== 200) throw new Error("Failed to mark node complete");
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error completing node progress:", err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+

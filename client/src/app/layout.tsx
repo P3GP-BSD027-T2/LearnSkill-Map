@@ -52,7 +52,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        {token ? <Navbar userToken={token} role={role} /> : <Navbar />}
+        {token ? <Navbar userToken={token} /> : <Navbar />}
         <main>{children}</main>
         <Toaster richColors position="top-center" />
       </body>
