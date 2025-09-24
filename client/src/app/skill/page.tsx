@@ -16,13 +16,19 @@ export default function RoadmapCatalog() {
     const fetchRoadmaps = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/skills`
+          `https://learnskillmap.vercel.app/api/skills`
         );
         if (Array.isArray(res.data)) {
           setRoadmaps(res.data);
         } else {
           setRoadmaps([]);
         }
+        // const res = await axios.get(`http://localhost:3000/api/skills`);
+        // if (Array.isArray(res.data)) {
+        //   setRoadmaps(res.data);
+        // } else {
+        //   setRoadmaps([]);
+        // }
       } catch (err) {
         console.error("Error fetching roadmaps:", err);
         setRoadmaps([]);
@@ -43,12 +49,10 @@ export default function RoadmapCatalog() {
       return matchesSearch && matchesFilter;
     });
 
-
- if (loading) return <Loading/>;
+  if (loading) return <Loading />;
 
   return (
     <main className="bg-gray-50 min-h-screen py-12 px-6">
-     
       <div className="max-w-6xl mx-auto text-center mb-12">
         <h1 className="text-4xl font-bold text-[#375EEB]">Browse Skills</h1>
         <p className="text-gray-600 mt-3 text-lg max-w-2xl mx-auto">
@@ -84,9 +88,7 @@ export default function RoadmapCatalog() {
           All Skills
         </h2>
         {filteredRoadmaps.length === 0 ? (
-          <p className="text-center text-gray-500 py-10">
-            No roadmaps found.
-          </p>
+          <p className="text-center text-gray-500 py-10">No roadmaps found.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredRoadmaps.map((roadmap, index) => (
