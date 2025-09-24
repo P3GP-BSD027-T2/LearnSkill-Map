@@ -22,12 +22,11 @@ export default function Navbar({
   useEffect(() => {
     router.refresh();
   }, [router]);
-  if (role) return null;
   return (
     <nav className="w-full sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo + Brand */}
+
           <div className="flex items-center gap-2">
             <Image
               src={Logo}
@@ -41,7 +40,6 @@ export default function Navbar({
             </Link>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6 text-gray-700 font-medium">
             <Link href="/skill" className="hover:text-blue-600 transition">
               Browser

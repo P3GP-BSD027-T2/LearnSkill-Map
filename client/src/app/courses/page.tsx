@@ -10,7 +10,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Clock, Tag } from "lucide-react"; // ⏰ jam & 💲 harga
+import { Clock } from "lucide-react"; 
 import { checkToken, getUserById } from "@/server-action";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/ui/loading";
@@ -25,7 +25,6 @@ type Course = {
   currency: string;
   duration: number;
   level: string;
-  tags: string[];
   content: string;
   status: string;
   created_at: string;
@@ -113,14 +112,7 @@ export default function CoursesPage() {
                 key={course._id}
                 className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition border flex flex-col overflow-hidden"
               >
-                <div className="mt-2 flex items-center justify-end gap-1 text-sm font-medium text-gray-700">
-                  <Tag className="w-4 h-4 text-[#375EEB]" />
-                  {course.price === 0
-                    ? "Free"
-                    : `${course.currency} ${course.price.toLocaleString(
-                        "id-ID"
-                      )}`}
-                </div>
+               
                 <div className="relative h-40 w-full">
                   <img
                     src={course.thumbnail}
@@ -186,7 +178,6 @@ export default function CoursesPage() {
         )}
       </div>
 
-      {/* Dialog */}
       <Dialog
         open={!!selectedCourse}
         onOpenChange={() => setSelectedCourse(null)}
