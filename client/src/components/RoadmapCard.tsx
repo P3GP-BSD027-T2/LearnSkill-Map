@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { CheckCircle2, Circle } from "lucide-react";
 import { Card } from "./ui/card";
-import Link from "next/link";
+
 import { Skill } from "@/app/user/page";
 import { Progress } from "./ui/progress";
 

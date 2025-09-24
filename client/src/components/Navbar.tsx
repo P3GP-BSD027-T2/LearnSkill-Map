@@ -55,7 +55,6 @@ export default function Navbar({
             </Link>
           </div>
 
-          {/* Right Icons */}
           <div className="flex items-center gap-4">
             <button className="p-2 rounded-full hover:bg-gray-100 transition">
               <Bell className="w-5 h-5 text-gray-600" />
@@ -63,7 +62,6 @@ export default function Navbar({
 
             {userToken ? (
               <div className="relative flex items-center gap-2">
-                {/* Avatar + Online Indicator */}
                 <div
                   className="relative cursor-pointer"
                   onClick={() => setDropdownOpen((prev) => !prev)}
@@ -79,23 +77,37 @@ export default function Navbar({
                   ) : (
                     <User className="w-6 h-6 text-gray-700" />
                   )}
-                  {/* Online circle */}
                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
                 </div>
 
-                {/* Dropdown */}
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-12 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-2 z-50">
-                    <button
-                      onClick={logoutHandler}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
+    {dropdownOpen && (
+      <div className="absolute right-0 mt-12 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-2 z-50">
+                  <button
+      onClick={() => setDropdownOpen(false)}
+      className="absolute top-1 right-1 text-gray-400 hover:text-gray-600"
+      >
+        ✕
+      </button>
+
+    <Link
+      href="/profile"
+      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+    >
+      <User className="w-4 h-4" />
+      Profile
+    </Link>
+
+    <button
+      onClick={logoutHandler}
+      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+    >
+      <LogOut className="w-4 h-4" />
+      Logout
+    </button>
+    
+    </div>
+  )}
+        </div>
             ) : (
               <Link href="/account">
                 <button className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 transition">
@@ -105,7 +117,6 @@ export default function Navbar({
               </Link>
             )}
 
-            {/* Mobile Hamburger */}
             <div className="md:hidden">
               <button
                 onClick={() => setMobileMenuOpen((prev) => !prev)}
@@ -117,7 +128,6 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-2 space-y-2 bg-white border-t border-gray-200 py-2 px-4">
             <Link href="/skill" className="block text-gray-700 hover:text-blue-600">

@@ -235,43 +235,6 @@ export default function SkillDetail() {
             <TrendingUp className="w-4 h-4" />
           </Button>
         </div>
-        <div className="flex items-center gap-2 mb-4">
-          <Button
-            onClick={() => {
-              if (!skill) return;
-              const allIds = skill.nodes.map((n) => n._id);
-              setDoneSteps(allIds);
-              localStorage.setItem(`doneSteps-${slug}`, JSON.stringify(allIds));
-
-              allIds.forEach(async (id) => {
-                try {
-                  await axios.post(
-                    "https://n8n.self-host.my.id/webhook/lsm/progress/complete",
-                    { node_id: id },
-                    { headers: { "Content-Type": "application/json" } }
-                  );
-                } catch (err) {
-                  console.error("❌ Gagal simpan progress:", id, err);
-                }
-              });
-            }}
-            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded"
-          >
-            Tandai Semua DONE
-          </Button>
-
-          <Button
-            onClick={() => {
-              setDoneSteps([]);
-              localStorage.setItem(`doneSteps-${slug}`, JSON.stringify([]));
-
-              console.log(" Semua node di-reset ke awal");
-            }}
-            className="text-white px-3 py-1 rounded"
-          >
-            Reset Semua Node
-          </Button>
-        </div>
       </div>
 
       <div className="h-[500px] w-full border rounded-lg bg-white mb-5">

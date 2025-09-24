@@ -25,6 +25,7 @@ export default function Page() {
       // console.log("roadmap result:", data);
 
       // router.push();
+      setRoadmap(data);
     } catch (err: any) {
       setError(err.message || "Terjadi kesalahan");
     } finally {
@@ -62,7 +63,6 @@ export default function Page() {
           placeholder="e.g. software engineer"
           required
         />
-
         <button
           type="submit"
           disabled={loading}

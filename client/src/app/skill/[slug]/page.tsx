@@ -67,7 +67,6 @@ export default function SkillDetail() {
   const [showTrackDialog, setShowTrackDialog] = useState(false);
   const [isTaken, setIsTaken] = useState(false);
 
-  // ambil data skill + progress
   useEffect(() => {
     async function fetchData() {
       try {
@@ -80,8 +79,6 @@ export default function SkillDetail() {
         const taken = saved ? (JSON.parse(saved) as string[]) : [];
 
         if (taken.includes(slug)) setIsTaken(true);
-
-        // Ambil progress dari backend atau localStorage
         if (res.data.doneSteps?.length) {
           setDoneSteps(res.data.doneSteps);
         } else {
@@ -106,7 +103,7 @@ export default function SkillDetail() {
     setDoneSteps(updatedSteps);
     localStorage.setItem(`doneSteps-${slug}`, JSON.stringify(updatedSteps));
 
-    console.log("🔄 Toggle step:", id);
+    console.log(" Toggle step:", id);
 
     try {
       const res = await axios.post(
