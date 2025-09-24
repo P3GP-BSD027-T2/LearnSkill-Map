@@ -1,14 +1,13 @@
 "use client";
 
-import { Search, Filter, Grid, List, Clock, Users, Star } from "lucide-react";
+import { Search, Grid, List, Clock, Users, Star } from "lucide-react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import bg from "@/assets/bg.jpg"; 
+import bg from "@/assets/bg.jpg";
 
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center bg-gradient-to-b from-[#eefeff] to-white">
-
       {/* Hero Section */}
       <section
         className="flex flex-col items-center justify-center min-h-screen bg-contain bg-center bg-no-repeat px-6 sm:px-12"
@@ -26,14 +25,22 @@ export default function Home() {
         </h1>
 
         <p className="mt-4 text-lg text-gray-600 text-center max-w-3xl">
-          Navigate your learning journey with personalized, visual roadmaps. Track progress, unlock achievements, and accelerate your professional growth.
+          Navigate your learning journey with personalized, visual roadmaps.
+          Track progress, unlock achievements, and accelerate your professional
+          growth.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-8">
-          <Link href="/skill" className="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition text-center">
+          <Link
+            href="/skill"
+            className="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition text-center"
+          >
             Explore Roadmaps
           </Link>
-          <Link href="/request-roadmap" className="px-6 py-3 rounded-lg border border-green-500 text-green-600 font-medium hover:bg-green-50 transition text-center">
+          <Link
+            href="/request-roadmap"
+            className="px-6 py-3 rounded-lg border border-green-500 text-green-600 font-medium hover:bg-green-50 transition text-center"
+          >
             Create Custom Path
           </Link>
         </div>
@@ -56,23 +63,34 @@ export default function Home() {
 
       {/* Roadmaps Section */}
       <section className="w-full max-w-6xl px-6 py-10">
-        <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">Discover Your Learning Path</h2>
+        <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">
+          Discover Your Learning Path
+        </h2>
         <p className="text-gray-600 text-center max-w-2xl mx-auto mb-6">
-          Explore curated roadmaps designed by industry experts, or continue your ongoing learning journey.
+          Explore curated roadmaps designed by industry experts, or continue
+          your ongoing learning journey.
         </p>
 
         {/* Filter + View Buttons */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
           <div className="flex gap-2">
-            <button className="px-4 py-2 rounded-full bg-gray-100 text-gray-800 font-medium hover:bg-gray-200 transition">Browse All</button>
-            <button className="px-4 py-2 rounded-full text-gray-600 hover:bg-gray-50 transition">My Learning</button>
+            <button className="px-4 py-2 rounded-full bg-gray-100 text-gray-800 font-medium hover:bg-gray-200 transition">
+              Browse All
+            </button>
+            <button className="px-4 py-2 rounded-full text-gray-600 hover:bg-gray-50 transition">
+              My Learning
+            </button>
           </div>
           <div className="flex items-center gap-2">
             <button className="flex items-center gap-1 px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 transition text-sm">
               <Search size={16} /> Filter
             </button>
-            <button className="p-2 rounded-md border border-gray-300 hover:bg-gray-50 transition"><Grid size={18} /></button>
-            <button className="p-2 rounded-md border border-gray-300 hover:bg-gray-50 transition"><List size={18} /></button>
+            <button className="p-2 rounded-md border border-gray-300 hover:bg-gray-50 transition">
+              <Grid size={18} />
+            </button>
+            <button className="p-2 rounded-md border border-gray-300 hover:bg-gray-50 transition">
+              <List size={18} />
+            </button>
           </div>
         </div>
 
@@ -101,28 +119,46 @@ export default function Home() {
               color: "purple",
             },
           ].map((card, idx) => (
-            <div key={idx} className="border rounded-xl p-6 shadow hover:shadow-lg transition">
+            <div
+              key={idx}
+              className="border rounded-xl p-6 shadow hover:shadow-lg transition"
+            >
               <div className="flex justify-between items-start">
-                <span className={`px-3 py-1 text-xs font-medium text-${card.color}-700 bg-${card.color}-100 rounded-full`}>
+                <span
+                  className={`px-3 py-1 text-xs font-medium text-${card.color}-700 bg-${card.color}-100 rounded-full`}
+                >
                   {card.category}
                 </span>
                 <span className="flex items-center text-yellow-500 text-sm font-semibold gap-1">
                   <Star size={16} fill="currentColor" /> {card.rating}
                 </span>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-gray-800">{card.title}</h3>
+              <h3 className="mt-4 text-lg font-semibold text-gray-800">
+                {card.title}
+              </h3>
               <p className="mt-2 text-sm text-gray-600">{card.desc}</p>
               <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                <span className="flex items-center gap-1"><Clock size={14} /> {card.duration}</span>
-                <span className="flex items-center gap-1"><Users size={14} /> {card.learners}</span>
-                <span className={`px-2 py-0.5 text-xs rounded-full bg-${card.color}-100 text-${card.color}-700`}>{card.level}</span>
+                <span className="flex items-center gap-1">
+                  <Clock size={14} /> {card.duration}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Users size={14} /> {card.learners}
+                </span>
+                <span
+                  className={`px-2 py-0.5 text-xs rounded-full bg-${card.color}-100 text-${card.color}-700`}
+                >
+                  {card.level}
+                </span>
               </div>
             </div>
           ))}
         </div>
 
         <div className="mt-10 text-center">
-          <Link href="/skill" className="px-6 py-2 rounded-lg border border-blue-500 text-blue-600 font-medium hover:bg-blue-50 transition">
+          <Link
+            href="/skill"
+            className="px-6 py-2 rounded-lg border border-blue-500 text-blue-600 font-medium hover:bg-blue-50 transition"
+          >
             View All Roadmaps →
           </Link>
         </div>
@@ -130,27 +166,63 @@ export default function Home() {
 
       {/* Interactive Learning Path */}
       <section className="w-full max-w-3xl px-6 py-12">
-        <h2 className="text-2xl font-bold text-gray-900 text-center mb-4">Interactive Learning Path</h2>
-        <p className="text-gray-600 text-center mb-8">Follow your personalized roadmap with interactive milestones.</p>
+        <h2 className="text-2xl font-bold text-gray-900 text-center mb-4">
+          Interactive Learning Path
+        </h2>
+        <p className="text-gray-600 text-center mb-8">
+          Follow your personalized roadmap with interactive milestones.
+        </p>
 
         <div className="relative pl-8">
           <div className="absolute left-3 top-0 h-full w-0.5 bg-blue-200"></div>
           {[
-            { title: "Introduction to React", desc: "Learn the fundamentals of React components", type: "Review" },
-            { title: "JSX and Components", desc: "Understanding JSX syntax and component structure", type: "Review" },
-            { title: "Props and State", desc: "Managing component data and interactions", type: "Continue" },
-            { title: "Build Todo App", desc: "Create your first React application", type: "Next" },
-            { title: "Hooks Deep Dive", desc: "Master useState, useEffect, and custom hooks", type: "Locked" },
-            { title: "Context API", desc: "Share data across components", type: "Locked" },
-            { title: "Final Project", desc: "Build a complete React project", type: "Locked" },
+            {
+              title: "Introduction to React",
+              desc: "Learn the fundamentals of React components",
+              type: "Review",
+            },
+            {
+              title: "JSX and Components",
+              desc: "Understanding JSX syntax and component structure",
+              type: "Review",
+            },
+            {
+              title: "Props and State",
+              desc: "Managing component data and interactions",
+              type: "Continue",
+            },
+            {
+              title: "Build Todo App",
+              desc: "Create your first React application",
+              type: "Next",
+            },
+            {
+              title: "Hooks Deep Dive",
+              desc: "Master useState, useEffect, and custom hooks",
+              type: "Locked",
+            },
+            {
+              title: "Context API",
+              desc: "Share data across components",
+              type: "Locked",
+            },
+            {
+              title: "Final Project",
+              desc: "Build a complete React project",
+              type: "Locked",
+            },
           ].map((step, idx) => (
             <div key={idx} className="relative mb-8 flex items-start gap-4">
               <div className="absolute -left-1.5">
                 {step.type === "Review" && (
-                  <div className="w-5 h-5 rounded-full border-2 border-yellow-500 flex items-center justify-center text-yellow-500 font-bold text-xs">✓</div>
+                  <div className="w-5 h-5 rounded-full border-2 border-yellow-500 flex items-center justify-center text-yellow-500 font-bold text-xs">
+                    ✓
+                  </div>
                 )}
                 {step.type === "Continue" && (
-                  <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-xs">▶</div>
+                  <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-xs">
+                    ▶
+                  </div>
                 )}
                 {step.type === "Next" && (
                   <div className="w-4 h-4 rounded-full bg-blue-500"></div>
@@ -159,14 +231,28 @@ export default function Home() {
                   <div className="w-4 h-4 rounded-full border border-gray-400 bg-gray-100"></div>
                 )}
               </div>
-              <div className={`ml-6 p-4 rounded-lg border w-full ${step.type === "Continue" ? "border-blue-500 bg-blue-50" : "border-gray-200 bg-white"}`}>
+              <div
+                className={`ml-6 p-4 rounded-lg border w-full ${
+                  step.type === "Continue"
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-gray-200 bg-white"
+                }`}
+              >
                 <div className="flex justify-between items-center">
                   <p className="font-medium text-gray-800">{step.title}</p>
-                  <span className={`px-2 py-0.5 text-xs rounded font-medium ${
-                    step.type === "Review" ? "bg-yellow-100 text-yellow-700" :
-                    step.type === "Continue" ? "bg-green-100 text-green-700" :
-                    step.type === "Next" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-500"
-                  }`}>{step.type}</span>
+                  <span
+                    className={`px-2 py-0.5 text-xs rounded font-medium ${
+                      step.type === "Review"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : step.type === "Continue"
+                        ? "bg-green-100 text-green-700"
+                        : step.type === "Next"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    {step.type}
+                  </span>
                 </div>
                 <p className="text-sm text-gray-600 mt-1">{step.desc}</p>
               </div>
@@ -177,7 +263,9 @@ export default function Home() {
 
       {/* Achievements */}
       <section className="max-w-6xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold text-center mb-2">Unlock Your Potential</h2>
+        <h2 className="text-2xl font-bold text-center mb-2">
+          Unlock Your Potential
+        </h2>
         <p className="text-gray-600 text-center mb-8">
           Earn achievements as you progress through your learning journey.
         </p>
@@ -202,12 +290,16 @@ export default function Home() {
           </div>
           <div className="bg-white p-4 rounded-xl shadow border">
             <p className="font-semibold">Speed Learner</p>
-            <p className="text-sm text-gray-500">Complete 5 lessons in a single day</p>
+            <p className="text-sm text-gray-500">
+              Complete 5 lessons in a single day
+            </p>
             <span className="text-green-600 text-xs font-bold">Earned</span>
           </div>
           <div className="bg-white p-4 rounded-xl shadow border">
             <p className="font-semibold">Project Master</p>
-            <p className="text-sm text-gray-500">Complete 10 hands-on projects</p>
+            <p className="text-sm text-gray-500">
+              Complete 10 hands-on projects
+            </p>
             <div className="mt-2 w-full bg-gray-200 h-2 rounded-full">
               <div className="h-2 bg-blue-600 rounded-full w-[70%]"></div>
             </div>
@@ -215,7 +307,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }
