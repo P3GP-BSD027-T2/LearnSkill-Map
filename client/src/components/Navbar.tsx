@@ -6,6 +6,8 @@ import Logo from "@/assets/logo.png";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { logoutHandler } from "@/server-action";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar({
   userToken,
@@ -14,7 +16,12 @@ export default function Navbar({
   userToken?: string;
   role?: string | null;
 }) {
+  const router = useRouter();
+  useEffect(() => {
+    router.refresh();
+  }, [router]);
   if (role) return null;
+
   return (
     <nav className="w-full sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between shadow-md">
       <div className="flex items-center ">

@@ -8,6 +8,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Data } from "./app/user/page";
 import { verifyToken } from "./helpers/jwt";
+import { UserBasic, UserWithRole } from "./middleware";
+import { CourseInput } from "./components/AddCourseForm";
 
 export type RegisterInput = {
   fullName: string;
@@ -66,12 +68,28 @@ export type Statistic = {
   revenue: number;
   paid: number;
 };
+export type Course = {
+  _id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  thumbnail: string;
+  price: number;
+  currency: string;
+  duration: number;
+  level: string;
+  tags: string[];
+  content: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+};
 
 export const getUserRoadmaps = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-    if (!token) return [];
-  
+  if (!token) return [];
+
   const userData = verifyToken(token) as { _id: string; role?: string };
   const userId = userData._id;
 
@@ -89,6 +107,17 @@ export const getUserRoadmaps = async () => {
     console.error("Error fetching user roadmaps:", err);
     return [];
   }
+};
+
+export type CheckTokenOutput = {
+  hasToken: boolean;
+  userId?: string;
+};
+
+export type PayNowOutput = {
+  success: boolean;
+  message: string;
+  redirect_url: string;
 };
 
 export const register = async (input: RegisterInput) => {
@@ -216,4 +245,99 @@ export const getStatistic = async (): Promise<Statistic[]> => {
     `${process.env.NEXT_PUBLIC_BASE_URL}/admin/stats`
   );
   return data;
+};
+
+export const getCourses = async (userId?: string): Promise<Course[]> => {
+  if (userId) {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/courses`,
+      { headers: { "x-user-id": userId } }
+    );
+    return data;
+  }
+
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/courses`
+  );
+  return data;
+};
+
+export const getCourseBySlug = async (slug: string): Promise<Course> => {
+  const { data } = await axios.get(
+    `https://n8n.self-host.my.id/webhook/07dab5d5-4d0a-4b6b-bad4-e631582bc31a/lsm/courses/${slug}`
+  );
+
+  return data;
+};
+
+export const payNow = async (
+  id: string | null,
+  course_id: string
+): Promise<PayNowOutput> => {
+  // await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/course-purchase`, {}{
+  //   headers: {"x-user-id": id}
+  // });
+  const { data }: { data: PayNowOutput } = await axios.post(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/course-purchase`,
+    { course_id },
+    { headers: { "x-user-id": id } }
+  );
+  // console.log(data);
+  redirect(`${data.redirect_url}`);
+  return data;
+};
+
+export const addCourse = async (input: CourseInput) => {
+  try {
+    // console.log(input);
+    const { data } = await axios.post(
+      "https://n8n.self-host.my.id/webhook/lsm/admin/courses",
+      input
+    );
+    // redirect("/admin/admin-courses");
+    return data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const updateCourse = async (input: CourseInput, courseId: string) => {
+  try {
+    const { data } = await axios.put(
+      `https://n8n.self-host.my.id/webhook/3dc5beea-65c0-4f39-84e4-e01a38d6d6b9/lsm/admin/courses/${courseId}`,
+      input
+    );
+    // console.log(input);
+    // redirect("/admin/admin-courses");
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deleteCourse = async (courseId: string) => {
+  try {
+    const { data } = await axios.delete(
+      `https://n8n.self-host.my.id/webhook/3dc5beea-65c0-4f39-84e4-e01a38d6d6b9/lsm/admin/courses/delete/${courseId}`
+    );
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const checkToken = async (): Promise<CheckTokenOutput> => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+
+  if (!token) return { hasToken: false };
+
+  try {
+    const userData = verifyToken(token) as UserBasic | UserWithRole;
+    return { hasToken: true, userId: userData._id };
+  } catch (err) {
+    console.error(err);
+    return { hasToken: false };
+  }
 };

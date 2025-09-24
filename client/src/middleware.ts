@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./helpers/jwt";
 import { cookies } from "next/headers";
 
+export type UserBasic = { _id: string };
+export type UserWithRole = { _id: string; role: string };
+
 export const config = {
   runtime: "nodejs",
 };
@@ -26,7 +29,8 @@ export const middleware = async (request: NextRequest) => {
     staticPaths.some((p) => pathname.startsWith(p)) ||
     pathname.startsWith("/skill") ||
     pathname.startsWith("/AI") ||
-    pathname.startsWith("/courses")
+    pathname.startsWith("/courses") ||
+    pathname.startsWith("/payment")
   ) {
     return NextResponse.next();
   }
@@ -39,9 +43,6 @@ export const middleware = async (request: NextRequest) => {
     // Token tidak ada → redirect ke halaman login/account
     return NextResponse.redirect(new URL("/account", request.url));
   }
-
-  type UserBasic = { _id: string };
-  type UserWithRole = { _id: string; role: string };
 
   let userData: UserBasic | UserWithRole;
 
@@ -60,13 +61,22 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.next();
   }
 
-  const userRoutes = ["/user", "/request-roadmap", "/mycourses", "/myroadmap"];
+  const userRoutes = [
+    "/user",
+    "/request-roadmap",
+    "/mycourses",
+    "/myroadmap",
+    "/courses",
+    "/payment",
+  ];
   if (userRoutes.some((route) => pathname.startsWith(route))) {
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-user-id", userData._id);
 
     return NextResponse.next({
-      headers: requestHeaders,
+      request: {
+        headers: requestHeaders,
+      },
     });
   }
 
