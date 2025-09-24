@@ -8,6 +8,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { login } from "@/server-action";
 import { useRouter } from "next/navigation";
+import Loading from "./ui/loading";
 
 export default function SignInForm() {
   const [hidePassword, setHidePassword] = useState(true);
@@ -91,7 +92,7 @@ export default function SignInForm() {
           type="submit"
           disabled={loading}
         >
-          {loading ? "Signing In..." : "Sign In"}
+          {Loading() ? "Signing In..." : "Sign In"}
         </Button>
       </form>
     </>

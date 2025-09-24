@@ -25,6 +25,7 @@ try {
   // console.log("roadmap result:", data);
 
   // router.push();
+  setRoadmap(data);
  
 } catch (err: any) {
   setError(err.message || "Terjadi kesalahan");
@@ -65,14 +66,19 @@ try {
           placeholder="e.g. software engineer"
           required
         />
-
-        <button
+<button
           type="submit"
           disabled={loading}
           className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition disabled:bg-gray-300"
         >
-          <Sparkles className="w-4 h-4" />
-          if (loading) return <Loading/>;
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Sparkles className="w-4 h-4" />
+              Generate Roadmap
+            </>
+          )}
         </button>
       </form>
 
