@@ -10,7 +10,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Clock } from "lucide-react"; 
+import { Clock } from "lucide-react";
 import { checkToken, getUserById } from "@/server-action";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/ui/loading";
@@ -112,7 +112,6 @@ export default function CoursesPage() {
                 key={course._id}
                 className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition border flex flex-col overflow-hidden"
               >
-               
                 <div className="relative h-40 w-full">
                   <img
                     src={course.thumbnail}
@@ -131,7 +130,7 @@ export default function CoursesPage() {
 
                   <div className="mt-4">
                     {course.price === 0 ? (
-                      <span className="text-2xl font-extrabold text-green-600">
+                      <span className="text-xl font-extrabold text-green-600">
                         Free
                       </span>
                     ) : (
@@ -140,7 +139,7 @@ export default function CoursesPage() {
                           {course.currency}{" "}
                           {(course.price * 1.5).toLocaleString("id-ID")}
                         </span>
-                        <span className="text-2xl font-extrabold text-[#375EEB]">
+                        <span className="text-xl font-extrabold text-[#375EEB]">
                           {course.currency}{" "}
                           {course.price.toLocaleString("id-ID")}
                         </span>
@@ -160,8 +159,6 @@ export default function CoursesPage() {
                       {course.duration} min
                     </span>
                   </div>
-
-            
 
                   <Button
                     className="mt-5 w-full bg-[#375EEB]"

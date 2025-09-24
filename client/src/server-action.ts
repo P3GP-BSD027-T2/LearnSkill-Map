@@ -104,12 +104,12 @@ export const generateRoadmap = async (skill_title: string) => {
         },
       }
     );
-     if (res.status !== 200) {
-    throw new Error(`Server error: ${res.status}`);
-  }
+    if (res.status !== 200) {
+      throw new Error(`Server error: ${res.status}`);
+    }
 
     //return res.data;
-  redirect(`/AI/${res.data.slug}`);
+    redirect(`/AI/${res.data.slug}`);
   } catch (err: any) {
     console.error("Error generating roadmap:", err.message);
     throw err;
@@ -382,8 +382,7 @@ export const checkToken = async (): Promise<CheckTokenOutput> => {
   }
 };
 
-
-export async function takeRoadmapAction(slug: string, doneSteps: string[]) {
+export async function takeRoadmapAction(slug: string, doneSteps?: string[]) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
@@ -404,7 +403,10 @@ export async function takeRoadmapAction(slug: string, doneSteps: string[]) {
     return { success: false, error: err.message };
   }
 }
-export async function updateRoadmapProgress(nodeId: string, updatedSteps: string[]) {
+export async function updateRoadmapProgress(
+  nodeId: string,
+  updatedSteps: string[]
+) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
@@ -423,8 +425,7 @@ export async function updateRoadmapProgress(nodeId: string, updatedSteps: string
         },
       }
     );
-    console.log("hasilll",res);
-    
+    console.log("hasilll", res);
 
     return { success: true, data: res.data || { node_id: nodeId } };
   } catch (err: any) {
@@ -433,20 +434,17 @@ export async function updateRoadmapProgress(nodeId: string, updatedSteps: string
   }
 }
 
-
-
-
 export async function toggleRoadmapStep(stepId: string, doneSteps: string[]) {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get('token')?.value;
-    if (!token) throw new Error('User not authenticated');
+    const token = cookieStore.get("token")?.value;
+    if (!token) throw new Error("User not authenticated");
 
     const userData = verifyToken(token) as { _id: string };
     const userId = userData._id;
 
     const updatedSteps = doneSteps.includes(stepId)
-      ? doneSteps.filter(s => s !== stepId)
+      ? doneSteps.filter((s) => s !== stepId)
       : [...doneSteps, stepId];
 
     const res = await axios.post(
@@ -454,19 +452,20 @@ export async function toggleRoadmapStep(stepId: string, doneSteps: string[]) {
       { doneSteps: updatedSteps },
       {
         headers: {
-          'Content-Type': 'application/json',
-          'x-user-id': userId,
+          "Content-Type": "application/json",
+          "x-user-id": userId,
         },
       }
     );
 
-    if (!res.data.success) throw new Error(res.data.message || 'Failed to update step');
+    if (!res.data.success)
+      throw new Error(res.data.message || "Failed to update step");
 
-    console.log('Updated steps:', updatedSteps);
+    console.log("Updated steps:", updatedSteps);
 
     return { success: true, doneSteps: updatedSteps };
   } catch (err: any) {
-    console.error('Error updating roadmap progress:', err.message);
+    console.error("Error updating roadmap progress:", err.message);
     return { success: false, error: err.message };
   }
 }

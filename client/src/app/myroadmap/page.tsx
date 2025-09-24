@@ -9,12 +9,10 @@ export default async function MyRoadmapPage() {
   // console.log(userId);
   return (
     <>
-      <div className="flex-1 grid min-h-screen grid-cols-3 gap-2 py-6 px-36">
-        <div className="w-full">
-          {data?.skills?.map(async (val, idx) => {
-            return <RoadmapCard data={val} key={idx} />;
-          })}
-        </div>
+      <div className="flex-1 grid grid-cols-3 gap-2 py-6 px-36">
+        {data?.skills?.map(async (val, idx) => {
+          return <RoadmapCard data={val} key={idx} />;
+        })}
       </div>
     </>
   );
