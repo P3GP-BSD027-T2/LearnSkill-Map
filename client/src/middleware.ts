@@ -20,6 +20,7 @@ export const middleware = async (request: NextRequest) => {
     "/AI",
     "/courses",
     "/skill/[slug]",
+    "/api/skills",
   ];
   const staticPaths = ["/_next", "/favicon.ico", "/assets"];
 
