@@ -22,6 +22,7 @@ export default function RoadmapCard({ data }: { data: Skill }) {
   let completedNode = data.roadmap.nodes.filter(
     (val) => val.progress?.completed_at
   ).length;
+  console.log(completedNode);
 
   data.roadmap.nodes.forEach((val) => {
     if (val.progress.completed_at !== null) completedNode++;
