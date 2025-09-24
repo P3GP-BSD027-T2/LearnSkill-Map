@@ -19,17 +19,17 @@ export default function RoadmapCard({ data }: { data: Skill }) {
   // }, [data.slug]);
   const totalNode = data.roadmap.nodes.length;
   //let completedNode: number = 0;
-  let completedNode = data.roadmap.nodes.filter(
+  const completedNode = data.roadmap.nodes.filter(
     (val) => val.progress?.completed_at
   ).length;
-  console.log(completedNode);
 
-  data.roadmap.nodes.forEach((val) => {
-    if (val.progress.completed_at !== null) completedNode++;
-  });
+  // data.roadmap.nodes.forEach((val) => {
+  //   if (val.progress.completed_at !== null) completedNode++;
+  // });
+  console.log(completedNode);
   // console.log(completedNode);
 
-  const skillProgress = Math.ceil((completedNode / 2 / totalNode) * 100);
+  const skillProgress = Math.ceil((completedNode / totalNode) * 100);
   return (
     <>
       <Card className="p-4 rounded-xl shadow-sm transition-all duration-200">

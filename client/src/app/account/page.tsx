@@ -4,9 +4,16 @@ import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
 import Logo from "@/assets/logo-1.png";
 
-export default function RegisterPage() {
-  return (
-    <>
+export default async function RegisterPage({
+  searchParams,
+}: {
+  searchParams?: { tab?: string } | Promise<{ tab?: string }>;
+}) {
+  const params = await searchParams;
+  const tab = params?.tab ?? "signin";
+
+  if (tab)
+    return (
       <div className="flex min-h-screen flex-col justify-center items-center bg-gradient-to-b from-[#eefeff] to-white gap-4">
         <Image src={Logo} alt="image-logo" width={100} height={100} />
 
@@ -15,8 +22,8 @@ export default function RegisterPage() {
         </p>
 
         <Tabs
-          defaultValue="signin"
-          className="bg-white w-md flex flex-col justify-center items-center p-6 rounded-lg gap-4 h-"
+          defaultValue={tab}
+          className="bg-white w-md flex flex-col justify-center items-center p-6 rounded-lg gap-4"
         >
           <TabsList className="w-full rounded-2xl">
             <TabsTrigger
@@ -42,7 +49,6 @@ export default function RegisterPage() {
                   Sign in to your account to continue
                 </p>
               </div>
-
               <SignInForm />
             </div>
           </TabsContent>
@@ -55,12 +61,10 @@ export default function RegisterPage() {
                   Join us and start your journey today
                 </p>
               </div>
-
               <SignUpForm />
             </div>
           </TabsContent>
         </Tabs>
       </div>
-    </>
-  );
+    );
 }
