@@ -19,14 +19,20 @@ export default function Achievement({ data }: { data: Data }) {
         </div>
 
         <div className="flex flex-col px-4 w-full gap-2">
-          {achievements.map((val, idx) => (
-            <AchievementCard
-              key={idx}
-              title={val.title}
-              description={val.description}
-              earnedDate={formatDate(val.created_at)}
-            />
-          ))}
+          {data.earned_achievements.length > 0 ? (
+            achievements.map((val, idx) => (
+              <AchievementCard
+                key={idx}
+                title={val.title}
+                description={val.description}
+                earnedDate={formatDate(val.created_at)}
+              />
+            ))
+          ) : (
+            <p className="w-full text-center text-gray-400">
+              No achievements yet.
+            </p>
+          )}
           {/* <AchievementCard /> */}
         </div>
       </div>

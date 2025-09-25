@@ -7,13 +7,15 @@ import { Data } from "@/app/user/page";
 import Link from "next/link";
 
 export default function ProfileCard({ data }: { data: Data }) {
+  console.log(data.skills[0].roadmap._id);
   const splittedName = data.name.split(" ");
   const defaultPhoto: string =
     splittedName.length === 1
       ? `${splittedName[0][0]}`
       : `${splittedName[0][0]}${splittedName[1][0]}`;
 
-  const totalRoadmap = data?.skills?.length;
+  const totalRoadmap =
+    data.skills[0].roadmap._id === undefined ? 0 : data.skills.length;
 
   return (
     <Card className="p-6 flex flex-col items-center md:items-start gap-6 rounded-2xl shadow-sm w-full">
