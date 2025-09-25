@@ -8,7 +8,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { login } from "@/server-action";
 import { useRouter } from "next/navigation";
-import Loading from "./ui/loading";
 
 export default function SignInForm() {
   const [hidePassword, setHidePassword] = useState(true);
@@ -39,62 +38,60 @@ export default function SignInForm() {
       setLoading(false);
     }
   };
-  return (
-    <>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          signInSubmitHandler();
-        }}
-      >
-        <div className="flex flex-col gap-3">
-          <Label>Email</Label>
-          <Input
-            className="bg-gray-100"
-            placeholder="Enter your email"
-            onChange={(e) => {
-              setSigninInput({ ...signInInput, email: e.target.value });
-            }}
-            value={signInInput.email}
-          ></Input>
 
-          <div className="flex justify-between">
-            <Label>Password</Label>
-            <button
-              className="text-blue-500 hover:cursor-pointer"
-              onClick={() => {
-                setHidePassword(!hidePassword);
-              }}
-              type="button"
-            >
-              {hidePassword ? (
-                <Eye className="w-4 h-4" />
-              ) : (
-                <EyeOff className="w-4 h-4" />
-              )}
-            </button>
-          </div>
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        signInSubmitHandler();
+      }}
+    >
+      <div className="flex flex-col gap-3">
+        <Label>Email</Label>
+        <Input
+          className="bg-gray-100"
+          placeholder="Enter your email"
+          onChange={(e) => {
+            setSigninInput({ ...signInInput, email: e.target.value });
+          }}
+          value={signInInput.email}
+        />
+
+        <Label>Password</Label>
+        <div className="relative">
           <Input
-            className="bg-gray-100"
+            className="bg-gray-100 pr-10" // kasih padding kanan biar icon nggak nutupin teks
             placeholder="Minimum length is 8"
-            onChange={(e) => {
+            onChange={(e) =>
               setSigninInput({
                 ...signInInput,
                 password: e.target.value,
-              });
-            }}
+              })
+            }
             value={signInInput.password}
             type={hidePassword ? "password" : "text"}
-          ></Input>
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-500"
+            onClick={() => setHidePassword(!hidePassword)}
+          >
+            {hidePassword ? (
+              <Eye className="w-5 h-5" />
+            ) : (
+              <EyeOff className="w-5 h-5" />
+            )}
+          </button>
         </div>
-        <Button
-          className="bg-blue-600 hover:cursor-pointer hover:bg-blue-700 mt-4 w-full"
-          type="submit"
-          disabled={loading}
-        >
-          {Loading() ? "Signing In..." : "Sign In"}
-        </Button>
-      </form>
-    </>
+      </div>
+
+      <Button
+        className="bg-blue-600 hover:bg-blue-700 mt-4 w-full transition-all duration-300 ease-in-out"
+        type="submit"
+        disabled={loading}
+      >
+        {loading ? "Signing In..." : "Sign In"}
+      </Button>
+    </form>
   );
 }

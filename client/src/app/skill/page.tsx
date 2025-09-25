@@ -15,20 +15,20 @@ export default function RoadmapCatalog() {
   useEffect(() => {
     const fetchRoadmaps = async () => {
       try {
-        const res = await axios.get(
-          `https://learnskillmap.vercel.app/api/skills`
-        );
-        if (Array.isArray(res.data)) {
-          setRoadmaps(res.data);
-        } else {
-          setRoadmaps([]);
-        }
-        // const res = await axios.get(`http://localhost:3000/api/skills`);
+        // const res = await axios.get(
+        //   `https://learnskillmap.vercel.app/api/skills`
+        // );
         // if (Array.isArray(res.data)) {
         //   setRoadmaps(res.data);
         // } else {
         //   setRoadmaps([]);
         // }
+         const res = await axios.get(`http://localhost:3000/api/skills`);
+        if (Array.isArray(res.data)) {
+          setRoadmaps(res.data);
+        } else {
+          setRoadmaps([]);
+        }
       } catch (err) {
         console.error("Error fetching roadmaps:", err);
         setRoadmaps([]);

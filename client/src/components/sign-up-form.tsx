@@ -25,7 +25,6 @@ export default function SignUpForm() {
       await register(registerInput);
 
       toast.success("Account created successfully!");
-      // optional: reset form
       setRegisterInput({
         fullName: "",
         email: "",
@@ -42,99 +41,98 @@ export default function SignUpForm() {
       setLoading(false);
     }
   };
+
   return (
-    <>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          registerHandler();
-        }}
-      >
-        <div className="flex flex-col gap-3">
-          <Label>Full Name</Label>
-          <Input
-            className="bg-gray-100"
-            placeholder="Jhon Doe"
-            onChange={(e) => {
-              setRegisterInput({ ...registerInput, fullName: e.target.value });
-            }}
-            value={registerInput.fullName}
-          ></Input>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        registerHandler();
+      }}
+      className="flex flex-col gap-3"
+    >
+      <div className="flex flex-col gap-1">
+        <Label>Full Name</Label>
+        <Input
+          className="bg-gray-100"
+          placeholder="Input your name"
+          value={registerInput.fullName}
+          onChange={(e) =>
+            setRegisterInput({ ...registerInput, fullName: e.target.value })
+          }
+        />
+      </div>
 
-          <Label>Email</Label>
-          <Input
-            className="bg-gray-100"
-            placeholder="Example@mail.com"
-            onChange={(e) => {
-              setRegisterInput({ ...registerInput, email: e.target.value });
-            }}
-            value={registerInput.email}
-          ></Input>
+      <div className="flex flex-col gap-1">
+        <Label>Email</Label>
+        <Input
+          className="bg-gray-100"
+          placeholder="example@mail.com"
+          value={registerInput.email}
+          onChange={(e) =>
+            setRegisterInput({ ...registerInput, email: e.target.value })
+          }
+        />
+      </div>
 
-          <div className="flex justify-between">
-            <Label>Password</Label>
-            <button
-              className="text-blue-500 hover:cursor-pointer"
-              onClick={() => {
-                setHidePassword(!hidePassword);
-              }}
-              type="button"
-            >
-              {hidePassword ? (
-                <Eye className="w-4 h-4" />
-              ) : (
-                <EyeOff className="w-4 h-4" />
-              )}
-            </button>
-          </div>
+      {/* Password */}
+      <div className="flex flex-col gap-1">
+        <Label>Password</Label>
+        <div className="relative">
           <Input
-            className="bg-gray-100"
-            placeholder="Minimum lenght is 8"
-            type={hidePassword ? "password" : "text"}
-            onChange={(e) => {
-              setRegisterInput({ ...registerInput, password: e.target.value });
-            }}
-            value={registerInput.password}
-          ></Input>
-
-          <div className="flex justify-between">
-            <Label>Confirm password</Label>
-            <button
-              className="text-blue-500 hover:cursor-pointer"
-              type="button"
-              onClick={() => {
-                setHideConfirmPassword(!hideConfirmPassword);
-              }}
-            >
-              {hideConfirmPassword ? (
-                <Eye className="w-4 h-4" />
-              ) : (
-                <EyeOff className="w-4 h-4" />
-              )}
-            </button>
-          </div>
-          <Input
-            className="bg-gray-100"
+            className="bg-gray-100 pr-10"
             placeholder="Minimum length is 8"
+            type={hidePassword ? "password" : "text"}
+            value={registerInput.password}
+            onChange={(e) =>
+              setRegisterInput({ ...registerInput, password: e.target.value })
+            }
+          />
+          <button
+            type="button"
+            onClick={() => setHidePassword(!hidePassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {hidePassword ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+          </button>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <Label>Confirm Password</Label>
+        <div className="relative">
+          <Input
+            className="bg-gray-100 pr-10"
+            placeholder="Repeat your password"
             type={hideConfirmPassword ? "password" : "text"}
-            onChange={(e) => {
+            value={registerInput.confirmPassword}
+            onChange={(e) =>
               setRegisterInput({
                 ...registerInput,
                 confirmPassword: e.target.value,
-              });
-            }}
-            value={registerInput.confirmPassword}
-          ></Input>
+              })
+            }
+          />
+          <button
+            type="button"
+            onClick={() => setHideConfirmPassword(!hideConfirmPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {hideConfirmPassword ? (
+              <Eye className="w-4 h-4" />
+            ) : (
+              <EyeOff className="w-4 h-4" />
+            )}
+          </button>
         </div>
+      </div>
 
-        <Button
-          className="bg-blue-600 hover:cursor-pointer hover:bg-blue-700 mt-4 w-full"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Creating account..." : "Create account"}
-        </Button>
-      </form>
-    </>
+      <Button
+        className="bg-blue-600 hover:bg-blue-700 mt-4 w-full"
+        type="submit"
+        disabled={loading}
+      >
+        {loading ? "Creating account..." : "Create account"}
+      </Button>
+    </form>
   );
 }

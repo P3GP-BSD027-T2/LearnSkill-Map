@@ -78,7 +78,6 @@ export default function AddCourseForm() {
       className="max-w-4xl mx-auto bg-white shadow-md rounded-xl p-8 flex flex-col gap-6"
       onSubmit={handleSubmit}
     >
-      {/* Row 1 */}
       <div className="grid grid-cols-2 gap-6">
         <div className="flex flex-col gap-2">
           <Label>Title:</Label>

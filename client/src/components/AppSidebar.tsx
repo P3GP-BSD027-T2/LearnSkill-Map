@@ -17,12 +17,9 @@ export function AppSidebar() {
   return (
     <Sidebar className="h-screen w-64 shadow-lg">
       <SidebarContent className="bg-blend-darken bg-indigo-950">
-        {/* === Logo Section === */}
         <div className="flex items-center justify-center py-6 ">
           <Image src={"/logo-1.png"} alt="image-logo" width={75} height={75} />
         </div>
-
-        {/* === Menu Section === */}
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-2 p-4">

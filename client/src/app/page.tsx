@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Grid, List, Clock, Users, Star } from "lucide-react";
+import { Search, Grid, List, Clock, Users, Star, Sparkle } from "lucide-react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import bg from "@/assets/bg.jpg";
@@ -14,7 +14,7 @@ export default function Home() {
         style={{ backgroundImage: `url(${bg.src})` }}
       >
         <span className="inline-flex items-center gap-2 px-4 py-1.5 text-sm font-medium text-yellow-800 bg-yellow-100 rounded-full shadow-sm mb-6">
-          <Star className="w-4 h-4 text-yellow-600" /> AI-Powered Learning Paths
+          <Sparkle className="w-4 h-4 text-yellow-600" /> AI-Powered Learning Paths
         </span>
 
         <h1 className="text-4xl md:text-6xl font-black text-gray-900 text-center leading-tight mb-6">
