@@ -7,8 +7,10 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { register } from "@/server-action";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
+  const router = useRouter();
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [hidePassword, setHidePassword] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -32,6 +34,7 @@ export default function SignUpForm() {
         password: "",
         confirmPassword: "",
       });
+      router.push("/account?tab=signin");
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);

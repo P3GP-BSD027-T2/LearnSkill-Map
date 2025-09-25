@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { logoutHandler } from "@/server-action";
 import Image from "next/image";
+import Logo from "@/assets/logo-1.png";
 
 export function AppSidebar() {
   return (
@@ -19,7 +20,7 @@ export function AppSidebar() {
       <SidebarContent className="bg-blend-darken bg-indigo-950">
         {/* === Logo Section === */}
         <div className="flex items-center justify-center py-6 ">
-          <Image src={"/logo-1.png"} alt="image-logo" width={75} height={75} />
+          <Image src={Logo} alt="image-logo" width={75} height={75} />
         </div>
 
         {/* === Menu Section === */}

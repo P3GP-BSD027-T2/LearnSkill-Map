@@ -26,7 +26,6 @@ export default function Navbar({
     <nav className="w-full sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-
           <div className="flex items-center gap-2">
             <Image
               src={Logo}
@@ -35,7 +34,10 @@ export default function Navbar({
               height={40}
               className="rounded-md"
             />
-            <Link href="/" className="font-bold text-blue-800 text-lg sm:text-xl">
+            <Link
+              href="/"
+              className="font-bold text-blue-800 text-lg sm:text-xl"
+            >
               LearnSkill Map
             </Link>
           </div>
@@ -80,34 +82,44 @@ export default function Navbar({
                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
                 </div>
 
-    {dropdownOpen && (
-      <div className="absolute right-0 mt-12 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-2 z-50">
-                  <button
-      onClick={() => setDropdownOpen(false)}
-      className="absolute top-1 right-1 text-gray-400 hover:text-gray-600"
-      >
-        ✕
-      </button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-12 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-2 z-50">
+                    <button
+                      onClick={() => setDropdownOpen(false)}
+                      className="absolute top-1 right-1 text-gray-400 hover:text-gray-600"
+                    >
+                      ✕
+                    </button>
 
-    <Link
-      href="/profile"
-      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-    >
-      <User className="w-4 h-4" />
-      Profile
-    </Link>
+                    <Link
+                      onClick={() => {
+                        setDropdownOpen(false);
+                      }}
+                      href="/user"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <User className="w-4 h-4" />
+                      Profile
+                      {/* <button type="button" className="flex gap-2">
+                        <User className="w-4 h-4" />
+                        Profile
+                      </button> */}
+                    </Link>
 
-    <button
-      onClick={logoutHandler}
-      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-    >
-      <LogOut className="w-4 h-4" />
-      Logout
-    </button>
-    
-    </div>
-  )}
-        </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logoutHandler();
+                        setDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <Link href="/account">
                 <button className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 transition">
@@ -130,16 +142,28 @@ export default function Navbar({
 
         {mobileMenuOpen && (
           <div className="md:hidden mt-2 space-y-2 bg-white border-t border-gray-200 py-2 px-4">
-            <Link href="/skill" className="block text-gray-700 hover:text-blue-600">
+            <Link
+              href="/skill"
+              className="block text-gray-700 hover:text-blue-600"
+            >
               Browser
             </Link>
-            <Link href="/courses" className="block text-gray-700 hover:text-blue-600">
+            <Link
+              href="/courses"
+              className="block text-gray-700 hover:text-blue-600"
+            >
               Courses
             </Link>
-            <Link href="/AI" className="block text-gray-700 hover:text-blue-600">
+            <Link
+              href="/AI"
+              className="block text-gray-700 hover:text-blue-600"
+            >
               Roadmap AI
             </Link>
-            <Link href="/user" className="block text-gray-700 hover:text-blue-600">
+            <Link
+              href="/user"
+              className="block text-gray-700 hover:text-blue-600"
+            >
               Profile
             </Link>
             {userToken && (

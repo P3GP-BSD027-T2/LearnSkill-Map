@@ -10,6 +10,7 @@ export default function AchievementCard({
   description: string;
   earnedDate: string;
 }) {
+  // console.log(title);
   return (
     <>
       <Card className="p-4 flex items-start gap-4 rounded-xl shadow-sm transition-all duration-200 hover:shadow-md hover:border-amber-300 hover:bg-amber-50 cursor-pointer">

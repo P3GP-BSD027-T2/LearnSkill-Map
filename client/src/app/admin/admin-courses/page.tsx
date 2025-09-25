@@ -2,6 +2,16 @@ import AdminCoursesTable from "@/components/CoursesTable";
 import { verifyToken } from "@/helpers/jwt";
 import { getCourses } from "@/server-action";
 import { cookies } from "next/headers";
+// import { registerLicense } from "@syncfusion/ej2-base";
+
+// const licenseKey = process.env.SYNCFUSION_LICENSE;
+
+// if (!licenseKey) {
+//   throw new Error(
+//     "SYNCFUSION_LICENSE_KEY is not defined in environment variables"
+//   );
+// }
+// registerLicense(licenseKey);
 
 export default async function AdminCoursesPage() {
   const cookieStore = await cookies();
